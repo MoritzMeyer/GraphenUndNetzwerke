@@ -9,6 +9,9 @@ namespace GraphSearch
         public static IEnumerable<Node> Search(Graph graph, Node start, Node goal)
         {
             Stack<Node> stack = new Stack<Node>();
+            SearchHelper(ref stack, start, goal);
+
+            return stack;
         }
 
         public static bool SearchHelper(ref Stack<Node> stack, Node start, Node goal)
@@ -22,8 +25,23 @@ namespace GraphSearch
 
             while(stack.Count > 0)
             {
-
+                foreach(Node node in start.Neighbours)
+                {
+                    stack.Pop();
+                    if (!node.Visited)
+                    {
+                        node.Visited = true;
+                        if (node.Equals(goal))
+                        {
+                            return true;
+                        }
+                        
+                        stack.Push(node);
+                    }
+                }
             }
+
+            return false;
         }
     }
 }

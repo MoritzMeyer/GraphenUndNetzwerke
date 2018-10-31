@@ -198,11 +198,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Graph\\GraphSearch\\GraphSearch.csproj",
+      "projectUniqueName": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Exercises\\GraphenUndNetzwerke\\GraphSearch\\GraphSearch.csproj",
       "projectName": "GraphSearch",
-      "projectPath": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Graph\\GraphSearch\\GraphSearch.csproj",
+      "projectPath": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Exercises\\GraphenUndNetzwerke\\GraphSearch\\GraphSearch.csproj",
       "packagesPath": "C:\\Users\\Moritz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Graph\\GraphSearch\\obj\\",
+      "outputPath": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Exercises\\GraphenUndNetzwerke\\GraphSearch\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -221,8 +221,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Graph\\Graph\\GraphCollection.csproj": {
-              "projectPath": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Graph\\Graph\\GraphCollection.csproj"
+            "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Exercises\\GraphenUndNetzwerke\\Graph\\GraphCollection.csproj": {
+              "projectPath": "C:\\Users\\Moritz\\Documents\\Dropbox\\Studium\\Fulda\\4_WS1819\\GraphenNetzwerke\\Exercises\\GraphenUndNetzwerke\\Graph\\GraphCollection.csproj"
             }
           }
         }
