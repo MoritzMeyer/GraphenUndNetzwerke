@@ -1,20 +1,44 @@
 ﻿using GraphCollection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphSearch
 {
     public static class DepthFirstSearch
     {
-        public static IEnumerable<Node> Search(Graph graph, Node start, Node goal)
+        public static bool Search<T>(Graph<T> graph, T start, T goal) where T : Node
         {
-            Stack<Node> stack = new Stack<Node>();
-            SearchHelper(ref stack, start, goal);
+            Stack<T> stack = new Stack<T>();
+            bool success = SearchHelper<T>(ref stack, start, goal);
 
-            return stack;
+            if (success)
+            {
+                T previous = stack.Pop();
+                string output = previous.ToString();
+
+                while(stack.Count > 0)
+                {
+                    T actual = stack.Pop();
+                    if (previous.HasChild(actual))
+                    {
+                        previous = actual;
+                        output = previous.ToString() + " -> " + output;
+                    }
+                }
+
+                Console.WriteLine("DepthFirstSearch was successful!: ");
+                Console.WriteLine(output);
+            }
+            else
+            {
+                Console.WriteLine("DepthFirstSearch wasn't successful!");
+            }
+
+            return success;
         }
 
-        public static bool SearchHelper(ref Stack<Node> stack, Node start, Node goal)
+        public static bool SearchHelper<T>(ref Stack<T> stack, T start, T goal) where T : Node
         {
             stack.Push(start);
             start.Visited = true;
@@ -25,20 +49,27 @@ namespace GraphSearch
 
             while(stack.Count > 0)
             {
-                foreach(Node node in start.Neighbours)
+                T actual = stack.First();
+                if (actual.Neighbors.Where(n => !n.Visited).Any())
                 {
-                    stack.Pop();
-                    if (!node.Visited)
+                    foreach (T node in actual.Neighbors)
                     {
-                        node.Visited = true;
-                        if (node.Equals(goal))
+                        if (!node.Visited)
                         {
-                            return true;
+                            node.Visited = true;
+                            if (node.Equals(goal))
+                            {
+                                return true;
+                            }
+
+                            stack.Push(node);
                         }
-                        
-                        stack.Push(node);
                     }
                 }
+                else
+                {
+                    stack.Pop();
+                }                
             }
 
             return false;
