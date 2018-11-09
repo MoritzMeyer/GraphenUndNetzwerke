@@ -23,5 +23,13 @@ namespace GraphTest
             Assert.IsTrue(graph.Contains(node2));
             Assert.IsTrue(ReferenceEquals(node1, graph.GetNodeInstance(node2)));
         }
+
+        [TestMethod]
+        public void GetAdjacencyMatrix_must_work()
+        {
+            Graph<BucketNode> graph = GraphGenerator.BucketGraph(3, 5);
+
+            string adjacencyMatrix = graph.GetAdjacencyMatrix();
+        }
     }
 }

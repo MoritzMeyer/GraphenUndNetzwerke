@@ -107,5 +107,51 @@ namespace GraphCollection
             this.Nodes.ForEach(n => n.Visited = false);
         }
         #endregion
+
+        #region GetAdjacencyMatrix
+        /// <summary>
+        /// Gibt die AdjazenzMatrix eines Graphen zurück.s
+        /// </summary>
+        /// <returns>Die AdjazenzMatrix als String.</returns>
+        public string GetAdjacencyMatrix()
+        {
+            // Die maximale Länge einr Node-Caption ermitteln.
+            int maxNodeStringLengt = this.Nodes.Select(n => n.Caption).Max(n => n.Length);
+            string stringMatrix = string.Empty;
+
+            // Die Titelleiste erstellen.
+            stringMatrix +=
+                string.Concat(Enumerable.Repeat(" ", maxNodeStringLengt)) +
+                "||" +
+                this.Nodes
+                    .Select(n => n.Caption)
+                    .Aggregate((a, b) => a.CenterStringWithinLength(maxNodeStringLengt) + "|" + b.CenterStringWithinLength(maxNodeStringLengt)) +
+                Environment.NewLine;
+
+            stringMatrix += string.Concat(Enumerable.Repeat("=", stringMatrix.Length)) + Environment.NewLine;
+
+            // Die einzelnen Zeilen erstellen.
+            Nodes.ForEach(n =>
+            {
+                string[] boolValues = new string[this.Nodes.Count];
+
+                for (int i = 0; i < boolValues.Length; i++)
+                {
+                    boolValues[i] = (this.Nodes[i].Equals(n) || n.Neighbors.Contains(this.Nodes[i])).ToZeroAndOnes().CenterStringWithinLength(maxNodeStringLengt);
+                }
+
+
+                stringMatrix +=
+                    n.Caption.CenterStringWithinLength(maxNodeStringLengt) +
+                    "||" +
+                    boolValues.
+                        Aggregate((a, b) => a + "|" + b) +
+                    Environment.NewLine;                       
+                        
+            });
+
+            return stringMatrix;
+        }
+        #endregion
     }
 }
