@@ -22,6 +22,11 @@ namespace GraphCollection
         /// A property which indicates, if this node was visited during a graph search.
         /// </summary>
         public bool Visited { get; set; }
+
+        /// <summary>
+        /// A property which indicates the search order of the nodes.
+        /// </summary>
+        public int? Number { get; set; }
         #endregion
 
         #region ctor
@@ -33,6 +38,7 @@ namespace GraphCollection
         {
             this.Caption = caption;
             this.Neighbors = new List<Node>();
+            this.Number = null;
         }
         #endregion
 
