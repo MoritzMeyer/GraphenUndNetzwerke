@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace GraphSearch
 {
@@ -38,7 +41,7 @@ namespace GraphSearch
             return success;
         }
 
-        public static bool SearchHelper<T>(ref Stack<T> stack, T start, T goal) where T : Node
+        internal static bool SearchHelper<T>(ref Stack<T> stack, T start, T goal) where T : Node
         {
             stack.Push(start);
             start.Visited = true;

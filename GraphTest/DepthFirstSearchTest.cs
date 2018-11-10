@@ -2,7 +2,7 @@ using GraphCollection;
 using GraphSearch;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GraphTest
+namespace Tests
 {
     [TestClass]
     public class DepthFirstSearchTest

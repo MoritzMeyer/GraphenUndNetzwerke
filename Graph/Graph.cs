@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("GraphSearch")]
 
 namespace GraphCollection
 {
@@ -131,13 +136,15 @@ namespace GraphCollection
             stringMatrix += string.Concat(Enumerable.Repeat("=", stringMatrix.Length)) + Environment.NewLine;
 
             // Die einzelnen Zeilen erstellen.
-            Nodes.ForEach(n =>
+            foreach(Node n in this.Nodes)
             {
                 string[] boolValues = new string[this.Nodes.Count];
 
                 for (int i = 0; i < boolValues.Length; i++)
                 {
-                    boolValues[i] = (this.Nodes[i].Equals(n) || n.Neighbors.Contains(this.Nodes[i])).ToZeroAndOnes().CenterStringWithinLength(maxNodeStringLengt);
+                    bool isAdjacent = this.Nodes[i].Caption.Equals(n.Caption);
+                    isAdjacent = isAdjacent || n.Neighbors.Where(nb => nb.Caption.Equals(this.Nodes[i].Caption)).Count() == 1;
+                    boolValues[i] = isAdjacent.ToZeroAndOnes().CenterStringWithinLength(maxNodeStringLengt);
                 }
 
 
@@ -148,9 +155,72 @@ namespace GraphCollection
                         Aggregate((a, b) => a + "|" + b) +
                     Environment.NewLine;                       
                         
-            });
+            }
 
             return stringMatrix;
+        }
+        #endregion
+
+        #region Load
+        /// <summary>
+        /// Lädt einen Graphen aus einer Datei.
+        /// </summary>
+        /// <param name="path">Der Pfad zu der Datei.</param>
+        /// <returns>Der Graph.</returns>
+        public static Graph<Node> Load(string path)
+        {
+            // Die Daten aus der Datei laden.
+            IEnumerable<string> lines = File.ReadLines(path);
+            if (lines.Count() < 1)
+            {
+                throw new InvalidDataException("The given File is empty");
+            }
+
+            // Die einzelnen Zeilen der Datei auslesen.
+            IEnumerator<string> linesEnumerator = lines.GetEnumerator();
+
+            // Die Liste mit NodeCaptions
+            linesEnumerator.MoveNext();
+            string[] nodeCaptions = linesEnumerator.Current.Split(';');
+
+            // Die Liste mit Kanten.
+            List<string> edges = new List<string>();
+            while(linesEnumerator.MoveNext())
+            {
+                edges.Add(linesEnumerator.Current);
+            }
+
+            // Den Graphen erstellen und die Nodes setzen.
+            Graph<Node> graph = new Graph<Node>(new Node(nodeCaptions[0]));
+            for(int i = 1; i < nodeCaptions.Count(); i++)
+            {
+                if (!graph.AddNode(new Node(nodeCaptions[i])))
+                {
+                    throw new ArgumentException("Die Bezeichnung der einzelnen Knoten muss einmalig sein.");
+                }
+            }
+
+            // Die Kanten erstellen.
+            foreach(string edge in edges)
+            {
+                string[] vertices = edge.Split(';');
+                if (vertices.Count() != 2 || 
+                    graph.Nodes.Where(n => n.Caption.Equals(vertices[0])).Count() != 1 || 
+                    graph.Nodes.Where(n => n.Caption.Equals(vertices[1])).Count() != 1)
+                {
+                    throw new FormatException("Die Kanten müssen in der Form: 'V1;V2' angegeben werden. Die Beispiel Kange geht von V1 nach V2. V1 und V2 stellen hierbei die Caption der Vertices dar. Es darf immer exakt eine Kante pro Zeile angegeben werden.");
+                }
+
+                graph.Nodes
+                    .Where(n => n.Caption.Equals(vertices[0])).Single()
+                    .AddNeighbor(
+                        graph.Nodes
+                            .Where(n => n.Caption.Equals(vertices[1]))
+                        .Single());
+            }
+          
+            // Den Graphen liefern.
+            return graph;
         }
         #endregion
     }

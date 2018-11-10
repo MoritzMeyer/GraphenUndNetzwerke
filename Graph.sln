@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphCollection", "Graph\Gr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphSearch", "GraphSearch\GraphSearch.csproj", "{77ED56F6-A31A-42C5-BDF6-F30FFF2D0BBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphTest", "GraphTest\GraphTest.csproj", "{9B4C57EC-A2CA-4E9D-9FB1-591F357C3E38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "GraphTest\Tests.csproj", "{9B4C57EC-A2CA-4E9D-9FB1-591F357C3E38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

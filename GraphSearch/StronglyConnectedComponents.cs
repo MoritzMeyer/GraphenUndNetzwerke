@@ -2,18 +2,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace GraphSearch
 {
     public static class StronglyConnectedComponents
     {
+        #region fields
         private static int i = 0;
         private static Dictionary<Node, int> lowpt = new Dictionary<Node, int>();
         private static Dictionary<Node, int> lowvine = new Dictionary<Node, int>();
         private static Stack<Node> nodeStack = new Stack<Node>();
         private static List<List<Node>> strongComponents;
+        #endregion
 
+        #region Search
+        /// <summary>
+        /// Startet die Suche nach den 'StronglyConnectedComponents' in einem Graph.
+        /// </summary>
+        /// <param name="graph">Der Graph in dem gesucht werden soll.</param>
+        /// <returns>Eine Liste mit StronglyConnectedComponents.</returns>
         public static List<List<Node>> Search(Graph<Node> graph)
         {
             i = 0;
@@ -32,22 +43,28 @@ namespace GraphSearch
 
             return strongComponents;
         }
+        #endregion
 
+        #region StrongConnect
+        /// <summary>
+        /// Die Funktion geht von einem Knoten aus einem Graphen aus los und sucht eine StronglyConnectetComponent.
+        /// </summary>
+        /// <param name="v">Der Knoten von dem aus gesucht werden soll.</param>
         private static void StrongConnect(Node v)
         {
             lowpt.Add(v, i);
             lowvine.Add(v, i);
             v.Number = i;
-            nodeStack.Push(v);
             i++;
-
+            nodeStack.Push(v);
+            
             foreach (Node w in v.Neighbors)
             {
                 if (w.Number == null) // (v,w) is a tree arc
                 {
                     StrongConnect(w);
                     lowpt[v] = Math.Min(lowpt[v], lowpt[w]);
-                    lowvine[v] = Math.Min(lowvine[v], v.Number.Value);
+                    lowvine[v] = Math.Min(lowvine[v], lowvine[w]);
                 }
                 else if (w.Neighbors.Contains(v)) // (v,w) is a frond
                 {
@@ -65,12 +82,15 @@ namespace GraphSearch
             if ((lowpt[v] == v.Number) && (lowvine[v] == v.Number.Value)) // v is the root of a component
             {
                 List<Node> strongComponent = new List<Node>();
-                while (nodeStack.First().Number.Value >= v.Number.Value)
+                while (nodeStack.Count() > 0 && nodeStack.First().Number.Value >= v.Number.Value)
                 {
                     Node w = nodeStack.Pop();
                     strongComponent.Add(w);                    
                 }
+
+                strongComponents.Add(strongComponent);
             }            
         }
+        #endregion
     }
 }

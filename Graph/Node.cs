@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+
+[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("GraphSearch")]
 
 namespace GraphCollection
 {
@@ -79,13 +83,13 @@ namespace GraphCollection
         }
         #endregion
 
-        #region Equals
+        #region EqualsWithNeighbors
         /// <summary>
-        /// Overrides the standard Equals Method for this class. The 'visited' value of this class is not considered for Equality.
+        /// Calculates Equality of two node instances while concidering the 'Neighbors' properties.
         /// </summary>
         /// <param name="obj">the 'other' object to check equality with.s</param>
         /// <returns>True if this and other object are Equal, false otherwise.</returns>
-        public override bool Equals(object obj)
+        public bool EqualsWithNeighbors(object obj)
         {
             if ((obj == null) || !this.GetType().Equals(obj.GetType()))
             {
@@ -113,6 +117,26 @@ namespace GraphCollection
                         return this.Caption.Equals(other.Caption) && this.Neighbors.SequenceEqual(other.Neighbors);
                     }
                 }               
+            }
+        }
+        #endregion
+
+        #region Equals
+        /// <summary>
+        /// Überschreibt die Equals-Methode für diese Klasse.
+        /// </summary>
+        /// <param name="obj">Das Objekt mit dem verglichen werden soll.</param>
+        /// <returns>True, wenn es sich um die selben Nodes handelt, false sonst.</returns>
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Node other = (Node)obj;
+                return this.Caption.Equals(other.Caption);
             }
         }
         #endregion
