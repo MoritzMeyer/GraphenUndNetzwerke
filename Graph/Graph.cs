@@ -174,6 +174,24 @@ namespace GraphCollection
         }
         #endregion
 
+        #region VerticesInSortOrder
+        /// <summary>
+        /// Liefert die Liste mit Vertices in sortierter Reihenfolge (sortiert nach ihrer Eigenschaft 'SortOrder')
+        /// </summary>
+        /// <returns>Die sortierte Liste.</returns>
+        public SortedList<int, Vertex<T>> VerticesInSortOrder()
+        {
+            SortedList<int, Vertex<T>> sortedVertices = new SortedList<int, Vertex<T>>();
+
+            foreach(Vertex<T> vertex in this.Vertices)
+            {
+                sortedVertices.Add(vertex.SortOrder, vertex);
+            }
+
+            return sortedVertices;
+        }
+        #endregion
+
         #region ResetVisitedProperty
         /// <summary>
         /// Setzt die 'isBesucht' Eigenschaft der Knoten des Graphen zurück.
