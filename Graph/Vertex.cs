@@ -29,6 +29,21 @@ namespace GraphCollection
         /// Die Nummer des Knotens.
         /// </summary>
         public int? Number { get; set; }
+
+        /// <summary>
+        /// Die Anzahl an Kanten, die in dem Knoten enden.
+        /// </summary>
+        public int InDegree { get; set; }
+
+        /// <summary>
+        /// Die Anzahl an Kanten, die von diesem Knoten ausgehen.
+        /// </summary>
+        public int OutDegree { get; set; }
+
+        /// <summary>
+        /// Die Rangfolge in einer Sortierung.
+        /// </summary>
+        public int SortOrder { get; set; }
         #endregion
 
         #region ctors
@@ -51,6 +66,7 @@ namespace GraphCollection
             this.Value = value;
             this.Neighbors = neighbors;
             this.IsVisited = false;
+            this.OutDegree = neighbors.Count();
         }
         #endregion
 
