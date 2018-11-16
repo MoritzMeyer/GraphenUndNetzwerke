@@ -101,5 +101,28 @@ namespace GraphCollectionTest
         }
         #endregion
 
+        #region CountVerticesOfSubGraph_must_work
+        [TestMethod]
+        public void CountVerticesOfSubGraph_must_work()
+        {
+            Vertex<int> v1 = new Vertex<int>(1);
+            Vertex<int> v2 = new Vertex<int>(2);
+            Vertex<int> v3 = new Vertex<int>(3);
+            Vertex<int> v4 = new Vertex<int>(4);
+            Vertex<int> v5 = new Vertex<int>(5);
+
+            v1.AddEdge(v2);
+            v1.AddEdge(v3);
+            v3.AddEdge(v4);
+            v3.AddEdge(v5);
+
+
+            Assert.AreEqual(5, v1.CountVerticesOfSubGraph());
+            Assert.AreEqual(1, v2.CountVerticesOfSubGraph());
+            Assert.AreEqual(3, v3.CountVerticesOfSubGraph());
+            Assert.AreEqual(1, v4.CountVerticesOfSubGraph());
+            Assert.AreEqual(1, v5.CountVerticesOfSubGraph());
+        }
+        #endregion
     }
 }

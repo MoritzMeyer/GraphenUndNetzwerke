@@ -34,5 +34,44 @@ namespace GraphCollectionTest
             }
         }
         #endregion
+
+        #region TopSort_must_throw_Exception_for_cycle
+        /// <summary>
+        /// Testet die TopSort Methode mit einem Zyklus im Graphen.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Der Graph enthält einen Zyklus")]
+        public void TopSort_must_throw_Exception_for_cycle()
+        {
+            Graph<int> graph = new Graph<int>(new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+
+            graph.AddEdge(0, 1);
+            graph.AddEdge(0, 2);
+            graph.AddEdge(0, 3);
+            graph.AddEdge(3, 4);
+            graph.AddEdge(3, 5);
+            graph.AddEdge(3, 6);
+            graph.AddEdge(6, 0);
+
+            graph.TopSort();
+        }
+        #endregion
+
+        #region CountTopologies_must_work
+        [TestMethod]
+        public void CountTopologies_must_work()
+        {
+            Graph<int> graph = new Graph<int>(new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+
+            graph.AddEdge(0, 1);
+            graph.AddEdge(0, 2);
+            graph.AddEdge(0, 3);
+            graph.AddEdge(3, 4);
+            graph.AddEdge(3, 5);
+            graph.AddEdge(3, 6);
+
+            Assert.AreEqual(180, graph.CountTopologies());
+        }
+        #endregion
     }
 }

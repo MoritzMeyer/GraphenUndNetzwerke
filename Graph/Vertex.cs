@@ -148,6 +148,31 @@ namespace GraphCollection
         }
         #endregion
 
+        #region CountVerticesOfSubGraph
+        /// <summary>
+        /// Zählt die Anzahl an Knoten in einem möglichen SubGraph, ausgehend von diesem Knoten.
+        /// </summary>
+        /// <returns>Die Anzahl an Knoten in dem Subgraph.</returns>
+        public int CountVerticesOfSubGraph()
+        {
+            int sum = 1;
+
+            if (this.Neighbors.Count == 0)
+            {
+                return sum;
+            }
+            else
+            {
+                foreach(Vertex<T> neighbor in this.Neighbors)
+                {
+                    sum += neighbor.CountVerticesOfSubGraph();
+                }
+
+                return sum;
+            }
+        }
+        #endregion
+
         #region Equlas
         /// <summary>
         /// Implementierung der Equals-Methode.
