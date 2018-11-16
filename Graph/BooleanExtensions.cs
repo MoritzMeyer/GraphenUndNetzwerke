@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-[assembly: InternalsVisibleTo("Tests")]
-[assembly: InternalsVisibleTo("GraphSearch")]
-
-namespace GraphCollection
+﻿namespace GraphCollection
 {
+    /// <summary>
+    /// Extensionclass for Booleans.
+    /// </summary>
     public static class BooleanExtensions
     {
         #region ToZeroAndOnes

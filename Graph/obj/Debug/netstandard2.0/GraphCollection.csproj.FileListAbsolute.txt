@@ -1,9 +1,0 @@
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\netstandard2.0\GraphCollection.csprojAssemblyReference.cache
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\netstandard2.0\GraphCollection.csproj.CoreCompileInputs.cache
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\netstandard2.0\GraphCollection.AssemblyInfoInputs.cache
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\netstandard2.0\GraphCollection.AssemblyInfo.cs
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\bin\Debug\netstandard2.0\GraphCollection.deps.json
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\bin\Debug\netstandard2.0\GraphCollection.dll
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\bin\Debug\netstandard2.0\GraphCollection.pdb
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\netstandard2.0\GraphCollection.dll
-C:\Users\Moritz\Documents\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\netstandard2.0\GraphCollection.pdb

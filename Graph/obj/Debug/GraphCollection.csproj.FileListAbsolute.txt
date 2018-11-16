@@ -1,0 +1,6 @@
+C:\Users\Moritz\source\repos\GraphenUndNetzwerke\Graph\bin\Debug\GraphCollection.dll
+C:\Users\Moritz\source\repos\GraphenUndNetzwerke\Graph\bin\Debug\GraphCollection.pdb
+C:\Users\Moritz\source\repos\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.csprojAssemblyReference.cache
+C:\Users\Moritz\source\repos\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.csproj.CoreCompileInputs.cache
+C:\Users\Moritz\source\repos\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.dll
+C:\Users\Moritz\source\repos\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.pdb
