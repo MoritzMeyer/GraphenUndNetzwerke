@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace GraphCollection
 {
-    public class Graph<T>
+    public class Graph<T> : IGraph<T>
     {
         #region ctors
         /// <summary>
@@ -15,13 +15,13 @@ namespace GraphCollection
         /// <param name="vertices">Die Liste mit Vertices, bei der jeder Vertex nur einmal vorkommen darf.</param>
         public Graph(IEnumerable<Vertex<T>> vertices)
         {
-            this.Vertices = new HashSet<Vertex<T>>();
+            this.Vertices = new List<Vertex<T>>();
 
             foreach(Vertex<T> vertex in vertices)
             {
                 if(!this.AddVertex(vertex))
                 {
-                    this.Vertices = new HashSet<Vertex<T>>();
+                    this.Vertices = new List<Vertex<T>>();
                     throw new ArgumentException("Die Liste mit Vertices enthält Knoten mehrfach, dies ist nicht zulässig.");
                 }
             }
@@ -41,7 +41,7 @@ namespace GraphCollection
         /// </summary>
         public Graph()
         {
-            this.Vertices = new HashSet<Vertex<T>>();
+            this.Vertices = new List<Vertex<T>>();
         }
         #endregion
 
@@ -49,7 +49,7 @@ namespace GraphCollection
         /// <summary>
         /// Die Liste mit Knoten des Graphen.
         /// </summary>
-        public HashSet<Vertex<T>> Vertices { get; set; }
+        public List<Vertex<T>> Vertices { get; set; }
         #endregion
 
         #region AddVertex
@@ -60,7 +60,15 @@ namespace GraphCollection
         /// <returns>True, wenn der Knoten hinzugefügt werden konnte, false wenn nicht.</returns>
         public bool AddVertex(Vertex<T> vertex)
         {
-            return this.Vertices.Add(vertex);
+            if (this.Vertices.Contains(vertex))
+            {
+                return false;
+            }
+            else
+            {
+                this.Vertices.Add(vertex);
+                return true;
+            }
         }
 
         /// <summary>

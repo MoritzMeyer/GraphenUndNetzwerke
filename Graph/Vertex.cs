@@ -13,7 +13,7 @@ namespace GraphCollection
         /// <summary>
         /// Die Liste mit Nachbarn des Knotens.
         /// </summary>
-        public HashSet<Vertex<T>> Neighbors { get; private set; }
+        public virtual List<Vertex<T>> Neighbors { get; internal set; }
 
         /// <summary>
         /// Der Wert des Knotens.
@@ -52,7 +52,7 @@ namespace GraphCollection
         /// </summary>
         /// <param name="value">Der Wert des Knotens.</param>
         public Vertex(T value)
-            : this(value, new HashSet<Vertex<T>>())
+            : this(value, new List<Vertex<T>>())
         {
         }
 
@@ -61,7 +61,7 @@ namespace GraphCollection
         /// </summary>
         /// <param name="value">Der Wert des Knotens.</param>
         /// <param name="neighbors"></param>
-        public Vertex(T value, HashSet<Vertex<T>> neighbors)
+        public Vertex(T value, List<Vertex<T>> neighbors)
         {
             this.Value = value;
             this.Neighbors = neighbors;
