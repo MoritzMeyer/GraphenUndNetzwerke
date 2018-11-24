@@ -6,25 +6,36 @@ using System.Linq;
 
 namespace GraphCollection
 {
-    public class Graph<T> : IGraph<T>
+    public class Graph<T>
     {
         #region ctors
         /// <summary>
         /// Erzeugt eine neue Instanz der Klasse.
         /// </summary>
-        /// <param name="vertices">Die Liste mit Vertices, bei der jeder Vertex nur einmal vorkommen darf.</param>
-        public Graph(IEnumerable<Vertex<T>> vertices)
+        /// <param name="vertices">Die Liste mit Knoten.</param>
+        /// <param name="edges">Die Liste mit Kanten.</param>
+        public Graph(IEnumerable<Vertex<T>> vertices, IEnumerable<Edge<T>> edges)
         {
             this.Vertices = new List<Vertex<T>>();
+            this.Edges = new List<Edge<T>>();
 
-            foreach(Vertex<T> vertex in vertices)
+            foreach (Vertex<T> vertex in vertices)
             {
-                if(!this.AddVertex(vertex))
+                if (!this.AddVertex(vertex))
                 {
                     this.Vertices = new List<Vertex<T>>();
                     throw new ArgumentException("Die Liste mit Vertices enthält Knoten mehrfach, dies ist nicht zulässig.");
                 }
             }
+        }
+
+        /// <summary>
+        /// Erzeugt eine neue Instanz der Klasse.
+        /// </summary>
+        /// <param name="vertices">Die Liste mit Vertices, bei der jeder Vertex nur einmal vorkommen darf.</param>
+        public Graph(IEnumerable<Vertex<T>> vertices)
+            : this(vertices, new List<Edge<T>>())
+        {            
         }
 
         /// <summary>
@@ -39,10 +50,35 @@ namespace GraphCollection
         /// <summary>
         /// Erzeugt eine neue Instanz der Klasse.
         /// </summary>
+        /// <param name="values">Die Liste mit Werten, die in die Knoten geschrieben werden sollen.</param>
+        /// <param name="edges">Die LIste mit Kanten.</param>
+        public Graph(IEnumerable<T> values, IEnumerable<Edge<T>> edges)
+            : this(values.Select(v => new Vertex<T>(v)))
+        {
+        }
+
+        /// <summary>
+        /// Erzeugt eine neue Instanz der Klasse.
+        /// </summary>
         public Graph()
         {
             this.Vertices = new List<Vertex<T>>();
+            this.Edges = new List<Edge<T>>();
         }
+        #endregion
+
+        #region IsDirected
+        /// <summary>
+        /// Gibt an, ob es sich um einen gerichteten Graphen handelt.
+        /// </summary>
+        public bool IsDirected { get; set; }
+        #endregion
+
+        #region IsWeighted
+        /// <summary>
+        /// Gibt an, ob der Graph gewichtet ist.
+        /// </summary>
+        public bool IsWeighted { get; set; }
         #endregion
 
         #region Vertices
@@ -50,6 +86,13 @@ namespace GraphCollection
         /// Die Liste mit Knoten des Graphen.
         /// </summary>
         public List<Vertex<T>> Vertices { get; set; }
+        #endregion
+
+        #region Edges
+        /// <summary>
+        /// Die Liste mit allen Kanten
+        /// </summary>
+        public List<Edge<T>> Edges { get; set; }
         #endregion
 
         #region AddVertex
@@ -66,6 +109,11 @@ namespace GraphCollection
             }
             else
             {
+                // Wenn der neue Vertex bereits Nachbarn besitzt, diese löschen
+                if (vertex.Neighbors.IsNotNullOrEmpty())
+                {
+                    vertex.Neighbors = new List<Vertex<T>>();                    
+                }
                 this.Vertices.Add(vertex);
                 return true;
             }
@@ -109,10 +157,10 @@ namespace GraphCollection
         /// <returns></returns>
         public bool RemoveVertex(Vertex<T> vertex)
         {
-            IEnumerable<Vertex<T>> verticesWithNeighbors = this.Vertices.Where(v => v.HasEdgeTo(vertex));
+            IEnumerable<Vertex<T>> verticesWithNeighbors = this.Edges.Where(e => e.To.Equals(vertex)).Select(e => e.From);
             foreach(Vertex<T> vertexWithNeighbor in verticesWithNeighbors)
             {
-                vertexWithNeighbor.RemoveEdge(vertex);
+                vertexWithNeighbor.RemoveNeighbor(vertex);
             }
 
             return this.Vertices.Remove(vertex);
@@ -145,12 +193,35 @@ namespace GraphCollection
 
         #region AddEdge
         /// <summary>
-        /// Fügt in dem Graphen eine Kante zwischen zwei Knoten hinzu.
+        /// Fügt dem Graphen eine ungewichtete Kante hinzu.
+        /// </summary>
+        /// <param name="valueFrom">Der Ausgangsknoten.</param>
+        /// <param name="valueTo">Der Eingangsknoten.</param>
+        /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
+        public bool AddEdge(T valueFrom, T valueTo)
+        {
+            return this.AddEdge(new Vertex<T>(valueFrom), new Vertex<T>(valueTo));
+        }
+
+        /// <summary>
+        /// Fügt dem Graphen eine ungewichtete Kante hinzu.
+        /// </summary>
+        /// <param name="from">Der Ausgangsknoten.</param>
+        /// <param name="to">Der Eingangsknoten.</param>
+        /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
+        public bool AddEdge(Vertex<T> from, Vertex<T> to)
+        {
+            return this.AddEdge(from, to, null);
+        }
+
+        /// <summary>
+        /// Fügt dem Graphen eine gewichtete Kante hinzu.
         /// </summary>
         /// <param name="valueFrom">Der Wert des Knoten von dem die Kante ausgehen soll.</param>
         /// <param name="valueTo">Der Wert des Knoten in dem die Kante enden soll.</param>
+        /// <param name="weight">Das Gewicht der Kante (null, wenn ungewichtet).</param>
         /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddEdge(T valueFrom, T valueTo)
+        public bool AddEdge(T valueFrom, T valueTo, int? weight)
         {
             if (!this.HasVertexWithValue(valueFrom) || !this.HasVertexWithValue(valueTo))
             {
@@ -160,16 +231,16 @@ namespace GraphCollection
             Vertex<T> vertexFrom = this.Vertices.Where(v => v.Value.Equals(valueFrom)).Single();
             Vertex<T> vertexTo = this.Vertices.Where(v => v.Value.Equals(valueTo)).Single();
 
-            return vertexFrom.AddEdge(vertexTo);
+            return this.AddEdge(vertexFrom, vertexTo, weight);
         }
 
         /// <summary>
-        /// Fügt in dem Graphen eine Kante zwischen zwei Knoten hinzu.
+        /// Fügt dem Graphen eine gewichtete Kante hinzu.
         /// </summary>
         /// <param name="from">Der Knoten von dem die Kante ausgeht.</param>
         /// <param name="to">Der Knoten in dem die Kante enden soll.</param>
         /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddEdge(Vertex<T> from, Vertex<T> to)
+        public bool AddEdge(Vertex<T> from, Vertex<T> to, int? weight)
         {
             if (!this.HasVertex(from) || !this.HasVertex(to))
             {
@@ -179,7 +250,20 @@ namespace GraphCollection
             this.Vertices.TryGetValue(from, out from);
             this.Vertices.TryGetValue(to, out to);
 
-            return from.AddEdge(to);
+            if(!from.AddNeighbor(to))
+            {
+                return false;
+            }
+
+            Edge<T> edge = new Edge<T>(from, to, weight, this.IsDirected);
+
+            if (this.Edges.Contains(edge))
+            {
+                return false;
+            }
+
+            this.Edges.Add(edge);
+            return true;
         }
         #endregion
 
@@ -257,60 +341,6 @@ namespace GraphCollection
             }
 
             return stringMatrix;
-        }
-        #endregion
-
-        #region Load
-        /// <summary>
-        /// Lädt einen Graphen aus einer Datei.
-        /// </summary>
-        /// <param name="path">Der Pfad zu der Datei.</param>
-        /// <returns>Der Graph.</returns>
-        public static Graph<string> Load(string path)
-        {
-            // Die Daten aus der Datei laden.
-            IEnumerable<string> lines = File.ReadLines(path);
-            if (lines.Count() < 1)
-            {
-                throw new InvalidDataException("The given File is empty");
-            }
-
-            // Die einzelnen Zeilen der Datei auslesen.
-            IEnumerator<string> linesEnumerator = lines.GetEnumerator();
-
-            // Die Liste mit NodeCaptions
-            linesEnumerator.MoveNext();
-            string[] nodeCaptions = linesEnumerator.Current.Split(';');
-
-            // Die Liste mit Kanten.
-            List<string> edges = new List<string>();
-            while (linesEnumerator.MoveNext())
-            {
-                edges.Add(linesEnumerator.Current);
-            }
-
-            // Den Graphen erstellen und die Nodes setzen.
-            Graph<string> graph = new Graph<string>(nodeCaptions);
-
-            // Die Kanten erstellen.
-            foreach (string edge in edges)
-            {
-                string[] vertices = edge.Split(';');
-                if (vertices.Count() != 2 ||
-                    !graph.HasVertexWithValue(vertices[0]) ||
-                    !graph.HasVertexWithValue(vertices[1]))
-                {
-                    throw new FormatException("Die Kanten müssen in der Form: 'V1;V2' angegeben werden. Wobei diese Kante von V1 nach V2 geht, sollte es sich um einen gerichteten Graphen handeln. V1 und V2 stellen die Werte der Vertices dar, welche in der ersten Zeile enthalten sein müssen. Es darf immer exakt eine Kante pro Zeile angegeben werden.");
-                }
-
-                if (!graph.AddEdge(vertices[0], vertices[1]))
-                {
-                    throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
-                }
-            }
-
-            // Den Graphen liefern.
-            return graph;
         }
         #endregion
     }

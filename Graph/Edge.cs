@@ -78,5 +78,46 @@ namespace GraphCollection
         {
         }
         #endregion
+
+        #region Equals
+        /// <summary>
+        /// Überschreibt die Equals Methode für diese Klasse.
+        /// </summary>
+        /// <param name="obj">Das Objekt mit dem verglichen werden soll.</param>
+        /// <returns>True, wenn das Objekt und diese Instanz der Klasse gleich sind, false wenn nicht.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !obj.GetType().Equals(this.GetType()))
+            {
+                return false;
+            }
+
+            Edge<T> other = (Edge<T>)obj;
+            if (this.IsDirected != other.IsDirected)
+            {
+                return false;
+            }
+
+            if (this.IsDirected)
+            {
+                return this.From.Equals(other.From) && this.To.Equals(other.To) && this.Weight.Equals(other.Weight);
+            }
+            else
+            {
+                return (this.From.Equals(other.From) || this.From.Equals(other.To)) && (this.To.Equals(other.To) || this.To.Equals(other.From)) && this.Weight.Equals(other.Weight);
+            }
+        }
+        #endregion
+
+        #region GetHashCode
+        /// <summary>
+        /// Überschreibt die Berechnung des HashCodes für diese Klasse.
+        /// </summary>
+        /// <returns>Den HashCode.</returns>
+        public override int GetHashCode()
+        {
+            return this.From.GetHashCode() ^ this.To.GetHashCode() ^ this.Weight.GetHashCode() ^ this.IsDirected.GetHashCode();            
+        }
+        #endregion
     }
 }

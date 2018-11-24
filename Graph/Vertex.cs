@@ -80,15 +80,15 @@ namespace GraphCollection
         }
         #endregion
 
-        #region AddEdge
+        #region AddNeighbor
         /// <summary>
-        /// Erstellt eine neue Kante (wenn nicht bereits vorhanden) zwischen diesem Knoten und dem newNeighbor.
+        /// Fügt dem Knoten einen neuen Nachbarn hinzu.
         /// </summary>
-        /// <param name="newNeighbor">Der Knoten zu dem die neue Kante erzeugt werden soll.</param>
-        /// <returns>True, wenn die Kante erzeugt wurde, false wenn diese bereits vorhanden ist.</returns>
-        public bool AddEdge(Vertex<T> newNeighbor)
+        /// <param name="newNeighbor">Der neue Nachbar.</param>
+        /// <returns>True, wenn der Nachbar hinzugefügt werden konnte, false wenn nicht.</returns>
+        public bool AddNeighbor(Vertex<T> newNeighbor)
         {
-            // Wenn die Kante bereits vorhanden ist, nicht erneut hinzufügen und false liefern.
+            // Wenn die Knoten bereits vorhanden ist, nicht erneut hinzufügen und false liefern.
             if (this.Neighbors.Contains(newNeighbor))
             {
                 return false;
@@ -99,13 +99,13 @@ namespace GraphCollection
         }
         #endregion
 
-        #region AddEdges
+        #region AddNeighbors
         /// <summary>
-        /// Erstellt neue Kanten aus einer Liste mit Vertices.
+        /// Fügt dem Knoten eine LIste mit Nachbarn hinzu.
         /// </summary>
-        /// <param name="newNeighbors">Die Vertices zu denen die Kanten erstellt werden sollen.</param>
-        /// <returns>True, wenn die Kanten erstellt werden konnten, false wenn nicht.</returns>
-        public bool AddEdges(HashSet<Vertex<T>> newNeighbors)
+        /// <param name="newNeighbors">Die neuen Nachbarn.</param>
+        /// <returns>True, wenn die Nachbarn hinzugefügt werden konnten, false wenn nicht.</returns>
+        public bool AddNeighbors(HashSet<Vertex<T>> newNeighbors)
         {
             foreach(Vertex<T> vertex in newNeighbors)
             {
@@ -124,25 +124,25 @@ namespace GraphCollection
         }
         #endregion
 
-        #region RemoveEdge
+        #region RemoveNeighbor
         /// <summary>
         /// Entfernt eine Kante von diesem Knoten.
         /// </summary>
         /// <param name="vertex">Der Knoten wessen Kante entfernt werden soll.</param>
         /// <returns>True, wennd die Kante entfernt werden konnte, false wenn nicht.</returns>
-        public bool RemoveEdge(Vertex<T> vertex)
+        public bool RemoveNeighbor(Vertex<T> vertex)
         {
            return this.Neighbors.Remove(vertex);
         }
         #endregion
 
-        #region HasEdgeTo
+        #region HasNeighbor
         /// <summary>
-        /// Prüft, ob zwischen diesem Knoten und dem übergebenen eine Kante existiert.
+        /// Prüft, der übergebene Knoten ein Nachbar dieses Knoten ist.
         /// </summary>
-        /// <param name="vertex">Der Knoten zu dem eine Kantenexistenz geprüft werden soll.</param>
-        /// <returns>True, wenn zwischen diesem Knoten und dem übergebenen eine Kante existiert, false wenn nicht.</returns>
-        public bool HasEdgeTo(Vertex<T> vertex)
+        /// <param name="vertex">Der Knoten zu dem die Nachbarschaft geprüft werden soll.</param>
+        /// <returns>True, der übergebebe Knoten Nachbar ist, false wenn nicht.</returns>
+        public bool HasNeighbor(Vertex<T> vertex)
         {
             return this.Neighbors.Contains(vertex);
         }

@@ -1,10 +1,66 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace GraphCollection
 {
     public static class GraphGenerator
     {
+        #region LoadFromFile
+        /// <summary>
+        /// Lädt einen Graphen aus einer Datei
+        /// </summary>
+        /// <param name="path">Der Pfad zur Datei.</param>
+        /// <returns>Den Graphen.</returns>
+        public static Graph<string> LoadFromFile(string path)
+        {
+            // Die Daten aus der Datei laden.
+            IEnumerable<string> lines = File.ReadLines(path);
+            if (lines.Count() < 1)
+            {
+                throw new InvalidDataException("The given File is empty");
+            }
+
+            // Die einzelnen Zeilen der Datei auslesen.
+            IEnumerator<string> linesEnumerator = lines.GetEnumerator();
+
+            // Die Liste mit NodeCaptions
+            linesEnumerator.MoveNext();
+            string[] nodeCaptions = linesEnumerator.Current.Split(';');
+
+            // Die Liste mit Kanten.
+            List<string> edges = new List<string>();
+            while (linesEnumerator.MoveNext())
+            {
+                edges.Add(linesEnumerator.Current);
+            }
+
+            // Den Graphen erstellen und die Nodes setzen.
+            Graph<string> graph = new Graph<string>(nodeCaptions);
+
+            // Die Kanten erstellen.
+            foreach (string edge in edges)
+            {
+                string[] vertices = edge.Split(';');
+                if (vertices.Count() != 2 ||
+                    !graph.HasVertexWithValue(vertices[0]) ||
+                    !graph.HasVertexWithValue(vertices[1]))
+                {
+                    throw new FormatException("Die Kanten müssen in der Form: 'V1;V2' angegeben werden. Wobei diese Kante von V1 nach V2 geht, sollte es sich um einen gerichteten Graphen handeln. V1 und V2 stellen die Werte der Vertices dar, welche in der ersten Zeile enthalten sein müssen. Es darf immer exakt eine Kante pro Zeile angegeben werden.");
+                }
+
+                if (!graph.AddEdge(vertices[0], vertices[1]))
+                {
+                    throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
+                }
+            }
+
+            // Den Graphen liefern.
+            return graph;
+        }
+        #endregion
+
         #region BucketGraph
         /// <summary>
         /// Erstellt einen neuen 'BucketGraph'

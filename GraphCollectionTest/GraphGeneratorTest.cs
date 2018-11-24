@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,21 @@ namespace GraphCollectionTest
     [TestClass]
     public class GraphGeneratorTest
     {
+        #region LoadFromFile_must_work
+        /// <summary>
+        /// Testet die Load Methode des Graphen.
+        /// </summary>
+        [TestMethod]
+        public void LoadFromFile_must_work()
+        {
+            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "TestGraph.txt");
+
+            Graph<string> graph = GraphGenerator.LoadFromFile(path);
+            string adjacencyMatrix = graph.GetAdjacencyMatrix();
+
+            Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||0|1|1|0|0\r\n3||0|0|1|1|0\r\n4||0|0|0|1|1\r\n5||0|1|0|0|1\r\n", adjacencyMatrix);
+        }
+        #endregion
 
         #region GetPossibleChildNodes_must_work
         /// <summary>

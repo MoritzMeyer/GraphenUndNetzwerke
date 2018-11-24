@@ -47,43 +47,43 @@ namespace GraphCollectionTest
         }
         #endregion
 
-        #region AddEdge_must_work
+        #region AddNeighbor_must_work
         [TestMethod]
-        public void AddEdge_must_work()
+        public void AddNeighbor_must_work()
         {
             Vertex<TwoBuckets> v1 = new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 3, 0));
             Vertex<TwoBuckets> v2 = new Vertex<TwoBuckets>(v1.Value.FillB2());
 
-            Assert.IsTrue(v1.AddEdge(v2));
-            Assert.IsFalse(v1.AddEdge(v2));
+            Assert.IsTrue(v1.AddNeighbor(v2));
+            Assert.IsFalse(v1.AddNeighbor(v2));
         }
         #endregion
 
-        #region HasEdge_must_work
+        #region HasNeighbor_must_work
         [TestMethod]
-        public void HasEdge_must_work()
+        public void HasNeighbor_must_work()
         {
             Vertex<TwoBuckets> v1 = new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 3, 0));
             Vertex<TwoBuckets> v2 = new Vertex<TwoBuckets>(v1.Value.FillB2());
 
-            Assert.IsTrue(v1.AddEdge(v2));
-            Assert.IsTrue(v1.HasEdgeTo(v2));
+            Assert.IsTrue(v1.AddNeighbor(v2));
+            Assert.IsTrue(v1.HasNeighbor(v2));
         }
         #endregion
 
-        #region AddEdges_must_work
+        #region AddNeighbors_must_work
         [TestMethod]
-        public void AddEdges_must_work()
+        public void AddNeighbors_must_work()
         {
             Vertex<TwoBuckets> v1 = new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 3, 0));
             Vertex<TwoBuckets> v2 = new Vertex<TwoBuckets>(v1.Value.FillB2());
             Vertex<TwoBuckets> v3 = new Vertex<TwoBuckets>(v1.Value.EmptyB1());
 
-            Assert.IsTrue(v1.AddEdges(new HashSet<Vertex<TwoBuckets>>() { v2, v3 }));
-            Assert.IsTrue(v1.HasEdgeTo(v2));
-            Assert.IsTrue(v1.HasEdgeTo(v3));
-            Assert.IsTrue(v1.RemoveEdge(v2));
-            Assert.IsFalse(v1.AddEdges(new HashSet<Vertex<TwoBuckets>>() { v2, v3 }));
+            Assert.IsTrue(v1.AddNeighbors(new HashSet<Vertex<TwoBuckets>>() { v2, v3 }));
+            Assert.IsTrue(v1.HasNeighbor(v2));
+            Assert.IsTrue(v1.HasNeighbor(v3));
+            Assert.IsTrue(v1.RemoveNeighbor(v2));
+            Assert.IsFalse(v1.AddNeighbors(new HashSet<Vertex<TwoBuckets>>() { v2, v3 }));
         }
         #endregion
 
@@ -96,7 +96,7 @@ namespace GraphCollectionTest
 
             Assert.IsTrue(v1.AddEdge(v2));
             Assert.IsTrue(v1.HasEdgeTo(v2));
-            Assert.IsTrue(v1.RemoveEdge(v2));
+            Assert.IsTrue(v1.RemoveNeighbor(v2));
             Assert.IsFalse(v1.HasEdgeTo(v2));
         }
         #endregion

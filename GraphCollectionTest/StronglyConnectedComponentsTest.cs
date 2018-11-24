@@ -18,7 +18,7 @@ namespace GraphCollectionTest
         public void Search_must_work()
         {
             string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "TestGraph.txt");
-            Graph<string> graph = Graph<string>.Load(path);
+            Graph<string> graph = GraphGenerator.LoadFromFile(path);
 
             List<List<Vertex<string>>> stronglyConnectedComponents = StronglyConnectedComponents<string>.Search(graph);
 

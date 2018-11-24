@@ -132,21 +132,10 @@ namespace GraphCollectionTest
             Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||0|1|1|0|0\r\n3||0|0|1|1|0\r\n4||0|0|0|1|1\r\n5||0|1|0|0|1\r\n", adjacencyMatrix);
         }
         #endregion
-
-        #region Load_must_work
-        /// <summary>
-        /// Testet die Load Methode des Graphen.
-        /// </summary>
-        [TestMethod]
-        public void Load_must_work()
-        {
-            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "TestGraph.txt");
-
-            Graph<string> graph = Graph<string>.Load(path);
-            string adjacencyMatrix = graph.GetAdjacencyMatrix();
-
-            Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||0|1|1|0|0\r\n3||0|0|1|1|0\r\n4||0|0|0|1|1\r\n5||0|1|0|0|1\r\n", adjacencyMatrix);
-        }
-        #endregion
     }
 }
+
+
+// TODO: Die Tests für gewichtete und gerichtete Graphen hinzufügen
+// TODO: Die Tests für AddEdge/Remove Edge hinzufügen.
+// TODO: Test für RemoveVertex anpassen.
