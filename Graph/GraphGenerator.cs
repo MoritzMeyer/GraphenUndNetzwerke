@@ -13,7 +13,7 @@ namespace GraphCollection
         /// </summary>
         /// <param name="path">Der Pfad zur Datei.</param>
         /// <returns>Den Graphen.</returns>
-        public static Graph<string> LoadFromFile(string path)
+        public static Graph<string> LoadFromFile(string path, bool isDirected = false)
         {
             // Die Daten aus der Datei laden.
             IEnumerable<string> lines = File.ReadLines(path);
@@ -30,19 +30,19 @@ namespace GraphCollection
             string[] nodeCaptions = linesEnumerator.Current.Split(';');
 
             // Die Liste mit Kanten.
-            List<string> edges = new List<string>();
+            List<string> stringEdges = new List<string>();
             while (linesEnumerator.MoveNext())
             {
-                edges.Add(linesEnumerator.Current);
+                stringEdges.Add(linesEnumerator.Current);
             }
 
             // Den Graphen erstellen und die Nodes setzen.
-            Graph<string> graph = new Graph<string>(nodeCaptions);
+            Graph<string> graph = new Graph<string>(nodeCaptions, isDirected);
 
             // Die Kanten erstellen.
-            foreach (string edge in edges)
+            foreach (string stringEdge in stringEdges)
             {
-                string[] vertices = edge.Split(';');
+                string[] vertices = stringEdge.Split(';');
                 if (vertices.Count() != 2 ||
                     !graph.HasVertexWithValue(vertices[0]) ||
                     !graph.HasVertexWithValue(vertices[1]))
@@ -58,6 +58,7 @@ namespace GraphCollection
 
             // Den Graphen liefern.
             return graph;
+
         }
         #endregion
 
@@ -77,7 +78,7 @@ namespace GraphCollection
             }
 
             // Initialize Graph
-            Graph<TwoBuckets> graph = new Graph<TwoBuckets>();
+            Graph<TwoBuckets> graph = new Graph<TwoBuckets>(true);
             graph.AddVertex(startValue);
 
             // Generate first NeighborNodes.

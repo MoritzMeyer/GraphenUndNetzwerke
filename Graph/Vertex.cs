@@ -155,6 +155,7 @@ namespace GraphCollection
         /// <returns>Die Anzahl an Knoten in dem Subgraph.</returns>
         public int CountVerticesOfSubGraph()
         {
+            // TODO: Die Funktion muss glaube ich in den Graphen.
             int sum = 1;
 
             if (this.Neighbors.Count == 0)

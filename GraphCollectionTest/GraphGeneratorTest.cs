@@ -24,7 +24,7 @@ namespace GraphCollectionTest
             Graph<string> graph = GraphGenerator.LoadFromFile(path);
             string adjacencyMatrix = graph.GetAdjacencyMatrix();
 
-            Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||0|1|1|0|0\r\n3||0|0|1|1|0\r\n4||0|0|0|1|1\r\n5||0|1|0|0|1\r\n", adjacencyMatrix);
+            Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||1|1|1|0|1\r\n3||1|1|1|1|0\r\n4||0|0|1|1|1\r\n5||0|1|0|1|1\r\n", adjacencyMatrix);
         }
         #endregion
 
@@ -95,6 +95,7 @@ namespace GraphCollectionTest
             "3-4|| 0 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 0 | 1 \r\n" +
             "3-1|| 0 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 1 \r\n" +
             "0-4|| 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 \r\n";
+
             string adjacencyMatrix = bucketGraph.GetAdjacencyMatrix();
 
             Assert.AreEqual(expectedAdjacencyMatrix, adjacencyMatrix);

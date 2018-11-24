@@ -16,7 +16,7 @@ namespace GraphCollectionTest
         [TestMethod]
         public void TopSort_must_work()
         {
-            Graph<int> graph = new Graph<int>(new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+            Graph<int> graph = new Graph<int>(new List<int>() { 0, 1, 2, 3, 4, 5, 6 }, true);
 
             graph.AddEdge(0, 1);
             graph.AddEdge(0, 2);
@@ -61,7 +61,7 @@ namespace GraphCollectionTest
         [TestMethod]
         public void CountTopologies_must_work()
         {
-            Graph<int> graph = new Graph<int>(new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+            Graph<int> graph = new Graph<int>(new List<int>() { 0, 1, 2, 3, 4, 5, 6 }, true);
 
             graph.AddEdge(0, 1);
             graph.AddEdge(0, 2);

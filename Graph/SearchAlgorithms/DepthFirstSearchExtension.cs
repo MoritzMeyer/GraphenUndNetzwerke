@@ -44,7 +44,7 @@ namespace GraphCollection.SearchAlgorithms
                 while(stack.Count > 0)
                 {
                     Vertex<T> actual = stack.Pop();
-                    if (previous.HasEdgeTo(actual))
+                    if (graph.HasEdge(previous, actual))
                     {
                         previous = actual;
                         output = previous.ToString() + " -> " + output;

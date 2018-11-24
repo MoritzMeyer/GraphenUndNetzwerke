@@ -22,6 +22,11 @@ namespace GraphCollection.SearchAlgorithms
         /// <returns>Eine Liste mit StronglyConnectedComponents.</returns>
         public static List<List<Vertex<T>>> Search(Graph<T> graph)
         {
+            if (!graph.IsDirected)
+            {
+                throw new ArgumentException("Die 'strongly connected components' können nur in gerichteten Graphen berechnet werden.");
+            }
+
             i = 0;
             lowpt = new Dictionary<Vertex<T>, int>();
             lowvine = new Dictionary<Vertex<T>, int>();

@@ -14,10 +14,12 @@ namespace GraphCollection
         /// </summary>
         /// <param name="vertices">Die Liste mit Knoten.</param>
         /// <param name="edges">Die Liste mit Kanten.</param>
-        public Graph(IEnumerable<Vertex<T>> vertices, IEnumerable<Edge<T>> edges)
+        /// <param name="isDirected">Gibt an, ob der Graph gerichtet sein soll.</param>
+        public Graph(IEnumerable<Vertex<T>> vertices, IEnumerable<Edge<T>> edges, bool isDirected = false)
         {
             this.Vertices = new List<Vertex<T>>();
             this.Edges = new List<Edge<T>>();
+            this.IsDirected = isDirected;
 
             foreach (Vertex<T> vertex in vertices)
             {
@@ -33,8 +35,9 @@ namespace GraphCollection
         /// Erzeugt eine neue Instanz der Klasse.
         /// </summary>
         /// <param name="vertices">Die Liste mit Vertices, bei der jeder Vertex nur einmal vorkommen darf.</param>
-        public Graph(IEnumerable<Vertex<T>> vertices)
-            : this(vertices, new List<Edge<T>>())
+        /// <param name="isDirected">Gibt an, ob der Graph gerichtet sein soll.</param>
+        public Graph(IEnumerable<Vertex<T>> vertices, bool isDirected = false)
+            : this(vertices, new List<Edge<T>>(), isDirected: isDirected)
         {            
         }
 
@@ -42,8 +45,9 @@ namespace GraphCollection
         /// Erzeugt eine neue Instanz der Klasse.
         /// </summary>
         /// <param name="values">Die Liste mit Werten, die in die Knoten geschrieben werden sollen.</param>
-        public Graph(IEnumerable<T> values)
-            : this(values.Select(v => new Vertex<T>(v)))
+        /// <param name="isDirected">Gibt an, ob der Graph gerichtet sein soll.</param>
+        public Graph(IEnumerable<T> values, bool isDirected = false)
+            : this(values.Select(v => new Vertex<T>(v)), isDirected: isDirected)
         {
         }
 
@@ -52,18 +56,21 @@ namespace GraphCollection
         /// </summary>
         /// <param name="values">Die Liste mit Werten, die in die Knoten geschrieben werden sollen.</param>
         /// <param name="edges">Die LIste mit Kanten.</param>
-        public Graph(IEnumerable<T> values, IEnumerable<Edge<T>> edges)
-            : this(values.Select(v => new Vertex<T>(v)))
+        /// <param name="isDirected">Gibt an, ob der Graph gerichtet sein soll.</param>
+        public Graph(IEnumerable<T> values, IEnumerable<Edge<T>> edges, bool isDirected = false)
+            : this(values.Select(v => new Vertex<T>(v)), isDirected: isDirected)
         {
         }
 
         /// <summary>
         /// Erzeugt eine neue Instanz der Klasse.
         /// </summary>
-        public Graph()
+        /// <param name="isDirected">Gibt an, ob der Graph gerichtet sein soll.</param>
+        public Graph(bool isDirected = false)
         {
             this.Vertices = new List<Vertex<T>>();
             this.Edges = new List<Edge<T>>();
+            this.IsDirected = isDirected;
         }
         #endregion
 
@@ -157,10 +164,22 @@ namespace GraphCollection
         /// <returns></returns>
         public bool RemoveVertex(Vertex<T> vertex)
         {
-            IEnumerable<Vertex<T>> verticesWithNeighbors = this.Edges.Where(e => e.To.Equals(vertex)).Select(e => e.From);
-            foreach(Vertex<T> vertexWithNeighbor in verticesWithNeighbors)
+            vertex.Neighbors = new List<Vertex<T>>();
+
+            for (int i = 0; i < this.Vertices.Count(); i++)
             {
-                vertexWithNeighbor.RemoveNeighbor(vertex);
+                if (this.Vertices[i].HasNeighbor(vertex))
+                {
+                    this.Vertices[i].RemoveNeighbor(vertex);
+                }
+            }
+
+            for (int i = 0; i < this.Edges.Count(); i++)
+            {
+                if (this.Edges[i].From.Equals(vertex) || this.Edges[i].To.Equals(vertex))
+                {
+                    this.Edges.Remove(this.Edges[i]);
+                }
             }
 
             return this.Vertices.Remove(vertex);
@@ -188,6 +207,55 @@ namespace GraphCollection
         public bool HasVertexWithValue(T value)
         {
             return this.Vertices.Where(v => v.Value.Equals(value)).Any();
+        }
+        #endregion
+
+        #region RemoveEdge
+        /// <summary>
+        /// Entfernt eine Kante aus dem Graphen.
+        /// </summary>
+        /// <param name="edge">Die zu entfernende Kante</param>
+        /// <returns>True, wenn die Kante entfernt werden konnte, false wenn nicht.</returns>
+        public bool RemoveEdge(Edge<T> edge)
+        {
+            this.Vertices.TryGetValue(edge.From, out Vertex<T> from);
+            this.Vertices.TryGetValue(edge.To, out Vertex<T> to);
+
+            // Den Nachbarn to aus form entfernens
+            from.RemoveNeighbor(to);
+
+            // Wenn ungerichtet auch den from Nachbarn aus to entfernen
+            if (!this.IsDirected)
+            {
+                to.RemoveNeighbor(from);
+            }
+
+            return this.Edges.Remove(edge);
+        }
+
+        /// <summary>
+        /// Entfernt eine Kante aus dem Graphen.
+        /// </summary>
+        /// <param name="from">Der ausgehende Knoten der Kante.</param>
+        /// <param name="to">Der eingehende Knoten der Kante.</param>
+        /// <returns>Treu, wenn die Kante entfernt werden konnte, false wenn nicht.</returns>
+        public bool RemoveEdge(Vertex<T> from , Vertex<T> to)
+        {
+            this.Vertices.TryGetValue(from, out from);
+            this.Vertices.TryGetValue(to, out to);
+
+            // Den Nachbarn to aus form entfernens
+            from.RemoveNeighbor(to);
+
+            // Wenn ungerichtet auch den from Nachbarn aus to entfernen
+            if (!this.IsDirected)
+            {
+                to.RemoveNeighbor(from);
+            }
+
+            Edge<T> edge = this.Edges.Where(e => e.From.Equals(from) && e.To.Equals(to)).Single();
+
+            return this.Edges.Remove(edge);
         }
         #endregion
 
@@ -255,6 +323,11 @@ namespace GraphCollection
                 return false;
             }
 
+            if (!this.IsDirected)
+            {
+                to.AddNeighbor(from);
+            }
+
             Edge<T> edge = new Edge<T>(from, to, weight, this.IsDirected);
 
             if (this.Edges.Contains(edge))
@@ -264,6 +337,26 @@ namespace GraphCollection
 
             this.Edges.Add(edge);
             return true;
+        }
+        #endregion
+
+        #region HasEdge
+        /// <summary>
+        /// Prüft, ob in dem Graphen eine Kante zwischen den beiden gegebenen Knoten existiert.
+        /// </summary>
+        /// <param name="from">Im gerichteten Graphen die ausgehende Knoten.</param>
+        /// <param name="to">Im gerichteten Graphen der eingehende Knoten.</param>
+        /// <returns>True, wenn eine Kante zwischen den beiden gegebenen Knoten existiert, false wenn nicht.</returns>
+        public bool HasEdge(Vertex<T> from, Vertex<T> to)
+        {
+            if (this.IsDirected)
+            {
+                return this.Edges.Where(e => e.From.Equals(from) && e.To.Equals(to)).Count() == 1;
+            }
+            else
+            {
+                return this.Edges.Where(e => (e.From.Equals(from) && e.To.Equals(to)) || (e.To.Equals(from) && e.From.Equals(to))).Count() > 0;
+            }
         }
         #endregion
 
@@ -327,8 +420,12 @@ namespace GraphCollection
 
                 for (int i = 0; i < boolValues.Length; i++)
                 {
-                    bool isAdjacent = this.Vertices.ElementAt(i).Equals(v);
-                    isAdjacent = isAdjacent || v.HasEdgeTo(this.Vertices.ElementAt(i));
+                    bool isAdjacent = this.Vertices[i].Equals(v);
+                    isAdjacent = isAdjacent || this.Edges.Where(e => e.From.Equals(v) && e.To.Equals(this.Vertices[i])).Any();
+                    if (!this.IsDirected)
+                    {
+                        isAdjacent = isAdjacent || this.Edges.Where(e => e.To.Equals(v) && e.From.Equals(this.Vertices[i])).Any();
+                    }
                     boolValues[i] = isAdjacent.ToZeroAndOnes().CenterStringWithinLength(maxVertexStringLength);
                 }
 

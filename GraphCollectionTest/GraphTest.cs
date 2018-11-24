@@ -21,17 +21,19 @@ namespace GraphCollectionTest
             Vertex<int> v3 = new Vertex<int>(3);
             Vertex<int> v4 = new Vertex<int>(4);
 
-            Graph<int> graph = new Graph<int>(new List<Vertex<int>>() { v1, v2, v3, v4 });
+            Graph<int> graph = new Graph<int>();
 
-            graph.AddEdge(v1, v2);
-            graph.AddEdge(v2, v3);
-            graph.AddEdge(v3, v4);
-            graph.AddEdge(v4, v1);
+            // Dem ersten Knoten einen Nachbarn geben, bevor dem Graphen hinzugefügt wurde
+            v1.AddNeighbor(v2);
 
-            Assert.IsTrue(v1.HasEdgeTo(v2));
-            Assert.IsTrue(v2.HasEdgeTo(v3));
-            Assert.IsTrue(v3.HasEdgeTo(v4));
-            Assert.IsTrue(v4.HasEdgeTo(v1));
+            // Die Knoten dem Graphen hinzufügen.
+            Assert.IsTrue(graph.AddVertex(v1));
+            Assert.IsTrue(graph.AddVertex(v2));
+            Assert.IsTrue(graph.AddVertex(v3));
+            Assert.IsTrue(graph.AddVertex(v4));
+
+            // Der erste Knoten darf nun keine Nachbarn mehr haben.
+            Assert.IsFalse(v1.HasNeighbor(v2));
         }
         #endregion
 
@@ -39,25 +41,63 @@ namespace GraphCollectionTest
         [TestMethod]
         public void RemoveVertex_must_work()
         {
+            // Die Knoten erzeugen.
             Vertex<int> v1 = new Vertex<int>(1);
             Vertex<int> v2 = new Vertex<int>(2);
             Vertex<int> v3 = new Vertex<int>(3);
             Vertex<int> v4 = new Vertex<int>(4);
 
+            // ungerichteten Graphen erzeugen.
             Graph<int> graph = new Graph<int>(new List<Vertex<int>>() { v1, v2, v3, v4 });
 
+            // Mit HasVertex prüfen, ob die Knoten vorhanden sind.
             Assert.IsTrue(graph.HasVertex(v1));
             Assert.IsTrue(graph.HasVertex(v2));
             Assert.IsTrue(graph.HasVertex(v3));
             Assert.IsTrue(graph.HasVertex(v4));
 
+            // Die ersten beiden Knoten wieder entfernen.
             Assert.IsTrue(graph.RemoveVertex(v1));
             Assert.IsTrue(graph.RemoveVertex(v2));
 
+            // Das (nicht-) vorhanden sein der Knoten überprüfen.
             Assert.IsFalse(graph.HasVertex(v1));
             Assert.IsFalse(graph.HasVertex(v2));
             Assert.IsTrue(graph.HasVertex(v3));
             Assert.IsTrue(graph.HasVertex(v4));
+
+            //-------------------- ungerichteter Graph mit Kanten v1-v2 und v3-v4 --------------------
+            graph = new Graph<int>(new List<Vertex<int>>() { v1, v2, v3, v4 });
+            Assert.IsTrue(graph.AddEdge(v1, v2));
+            Assert.IsTrue(graph.AddEdge(v3.Value, v4.Value));
+
+            // Überprüfe die vorhandene Kante v1-v2
+            Assert.IsTrue(graph.HasEdge(v1, v2));
+            Assert.IsTrue(graph.HasEdge(v2, v1));
+
+            // Den ersten Knoten wieder entfernen
+            Assert.IsTrue(graph.RemoveVertex(v1));
+
+            // Es dürfen keine Kanten mehr zu dem Knoten existieren.
+            Assert.IsFalse(graph.HasEdge(v1, v2));
+            Assert.IsFalse(graph.HasEdge(v2, v1));
+            Assert.IsFalse(v1.HasNeighbor(v2));
+            Assert.IsFalse(v2.HasNeighbor(v1));
+
+            //-------------------- gerichteter Graph mit Kante v1->v2 erzeugen v3->v4 --------------------
+            graph = new Graph<int>(new List<Vertex<int>>() { v1, v2, v3, v4 });
+            Assert.IsTrue(graph.AddEdge(v1, v2));
+            Assert.IsTrue(graph.AddEdge(v3.Value, v4.Value));
+
+            // Überprüfe die vorhandene Kante v1-v2
+            Assert.IsTrue(graph.HasEdge(v1, v2));
+
+            // Den ersten Knoten wieder entfernen
+            Assert.IsTrue(graph.RemoveVertex(v1));
+
+            // Es dürfen keine Kanten mehr zu dem Knoten existieren.
+            Assert.IsFalse(graph.HasEdge(v1, v2));
+            Assert.IsFalse(v1.HasNeighbor(v2));
         }
         #endregion
 
@@ -98,8 +138,58 @@ namespace GraphCollectionTest
             Assert.IsTrue(graph.AddEdge(v1, v2));
             Assert.IsTrue(graph.AddEdge(v3.Value, v4.Value));
 
-            Assert.IsTrue(v1.HasEdgeTo(v2));
-            Assert.IsTrue(v3.HasEdgeTo(v4));
+            Assert.IsTrue(graph.HasEdge(v1, v2));
+            Assert.IsTrue(graph.HasEdge(v2, v1));
+            Assert.IsTrue(graph.HasEdge(v3, v4));
+            Assert.IsTrue(graph.HasEdge(v4, v3));
+
+            Assert.IsTrue(v1.HasNeighbor(v2));
+            Assert.IsTrue(v2.HasNeighbor(v1));
+            Assert.IsTrue(v3.HasNeighbor(v4));
+            Assert.IsTrue(v4.HasNeighbor(v3));
+
+            graph = new Graph<int>(new List<Vertex<int>>() { v1, v2, v3, v4 }, true);
+            Assert.IsTrue(graph.AddEdge(v1, v2));
+            Assert.IsTrue(graph.AddEdge(v3.Value, v4.Value));
+
+            Assert.IsTrue(graph.HasEdge(v1, v2));
+            Assert.IsFalse(graph.HasEdge(v2, v1));
+            Assert.IsTrue(graph.HasEdge(v3, v4));
+            Assert.IsFalse(graph.HasEdge(v4, v3));
+
+            Assert.IsTrue(v1.HasNeighbor(v2));
+            Assert.IsFalse(v2.HasNeighbor(v1));
+            Assert.IsTrue(v3.HasNeighbor(v4));
+            Assert.IsFalse(v4.HasNeighbor(v3));
+
+        }
+        #endregion
+
+        #region RemoveEdge_must_work
+        [TestMethod]
+        public void RemoveEdge_must_work()
+        {
+            Vertex<int> v1 = new Vertex<int>(1);
+            Vertex<int> v2 = new Vertex<int>(2);
+            Vertex<int> v3 = new Vertex<int>(3);
+            Vertex<int> v4 = new Vertex<int>(4);
+
+            // Einen ungerichteten Graphen mit den Kanten v1-v2, v3-v4 erzeugen
+            Graph<int> graph = new Graph<int>(new List<Vertex<int>>() { v1, v2, v3, v4 });
+            Assert.IsTrue(graph.AddEdge(v1, v2));
+            Assert.IsTrue(graph.AddEdge(v3.Value, v4.Value));
+
+            // Die erste Kante entfernen
+            Edge<int> edge1 = new Edge<int>(v1, v2);
+            Assert.IsTrue(graph.RemoveEdge(edge1));
+
+            Assert.IsFalse(graph.HasEdge(v1, v2));
+            Assert.IsFalse(graph.HasEdge(v2, v1));
+
+            // Die zweite Kante entfernen
+            Assert.IsTrue(graph.RemoveEdge(v3, v4));
+            Assert.IsFalse(graph.HasEdge(v3, v4));
+            Assert.IsFalse(graph.HasEdge(v4, v3));
         }
         #endregion
 
@@ -129,7 +219,7 @@ namespace GraphCollectionTest
             Assert.IsTrue(graph.AddEdge(v5, v2));
 
             string adjacencyMatrix = graph.GetAdjacencyMatrix();
-            Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||0|1|1|0|0\r\n3||0|0|1|1|0\r\n4||0|0|0|1|1\r\n5||0|1|0|0|1\r\n", adjacencyMatrix);
+            Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||1|1|1|0|1\r\n3||1|1|1|1|0\r\n4||0|0|1|1|1\r\n5||0|1|0|1|1\r\n", adjacencyMatrix);
         }
         #endregion
     }
@@ -137,5 +227,3 @@ namespace GraphCollectionTest
 
 
 // TODO: Die Tests für gewichtete und gerichtete Graphen hinzufügen
-// TODO: Die Tests für AddEdge/Remove Edge hinzufügen.
-// TODO: Test für RemoveVertex anpassen.
