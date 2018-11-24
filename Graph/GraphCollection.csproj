@@ -51,11 +51,14 @@
     <Compile Include="GraphGenerator.cs" />
     <Compile Include="IGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchAlgorithms\AllPairsShortestPathExtension.cs" />
     <Compile Include="SearchAlgorithms\DepthFirstSearchExtension.cs" />
+    <Compile Include="SearchAlgorithms\DijkstraExtension.cs" />
     <Compile Include="SearchAlgorithms\StronglyConnectedComponents.cs" />
     <Compile Include="SearchAlgorithms\TopSortExtension.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="TwoBuckets.cs" />
+    <Compile Include="Trictionary.cs" />
     <Compile Include="Vertex.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

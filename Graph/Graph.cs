@@ -85,7 +85,17 @@ namespace GraphCollection
         /// <summary>
         /// Gibt an, ob der Graph gewichtet ist.
         /// </summary>
-        public bool IsWeighted { get; set; }
+        public bool IsWeighted
+        {
+            get
+            {
+                return !this.Edges.Where(e => e.Weight == null).Any();
+            }
+            private set
+            {
+                this.IsWeighted = value;
+            }
+        }
         #endregion
 
         #region Vertices

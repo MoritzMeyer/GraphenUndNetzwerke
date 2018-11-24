@@ -119,5 +119,23 @@ namespace GraphCollection
             return this.From.GetHashCode() ^ this.To.GetHashCode() ^ this.Weight.GetHashCode() ^ this.IsDirected.GetHashCode();            
         }
         #endregion
+
+        #region ToString
+        /// <summary>
+        /// Überschreibt die ToString Methode.
+        /// </summary>
+        /// <returns>Die String repräsentation</returns>
+        public override string ToString()
+        {
+            string connector = this.IsDirected ? "-->" : "---";
+
+            if (this.Weight != null)
+            {
+                connector = connector[0] + this.Weight.ToString() + connector[2];
+            }
+
+            return $"{this.From.ToString()} {connector} {this.To.ToString()}";
+        }
+        #endregion
     }
 }
