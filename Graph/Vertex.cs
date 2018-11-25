@@ -44,6 +44,16 @@ namespace GraphCollection
         /// Die Rangfolge in einer Sortierung.
         /// </summary>
         public int SortOrder { get; set; }
+
+        /// <summary>
+        /// Der Vorgänger welcher durch den Dijkstra Alogrithmus berechnet wird.
+        /// </summary>
+        public Vertex<T> DijkstraAncestor { get; set; }
+
+        /// <summary>
+        /// Die Entfernung, welche durch den Dijkstra Algorithmus berechnet wird.
+        /// </summary>
+        public int? DijkstraDistance { get; set; }
         #endregion
 
         #region ctors

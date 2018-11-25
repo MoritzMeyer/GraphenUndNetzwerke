@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AllPairsShortestPathTest.cs" />
     <Compile Include="DepthFirstSearchTest.cs" />
+    <Compile Include="DijkstraExtensionTest.cs" />
     <Compile Include="EdgeTest.cs" />
     <Compile Include="GraphGeneratorTest.cs" />
     <Compile Include="GraphTest.cs" />
