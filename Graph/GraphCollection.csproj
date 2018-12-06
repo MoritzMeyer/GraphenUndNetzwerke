@@ -54,6 +54,7 @@
     <Compile Include="SearchAlgorithms\AllPairsShortestPathExtension.cs" />
     <Compile Include="SearchAlgorithms\DepthFirstSearchExtension.cs" />
     <Compile Include="SearchAlgorithms\DijkstraExtension.cs" />
+    <Compile Include="SearchAlgorithms\MinimalSpanningTreeKruskal.cs" />
     <Compile Include="SearchAlgorithms\StronglyConnectedComponents.cs" />
     <Compile Include="SearchAlgorithms\TopSortExtension.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

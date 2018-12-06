@@ -370,6 +370,31 @@ namespace GraphCollection
         }
         #endregion
 
+        #region GetEdge
+        /// <summary>
+        /// Gibt eine gesuchte Kante zurück.
+        /// </summary>
+        /// <param name="from">Der Ausgangsknoten.</param>
+        /// <param name="to">Der Eingangsknoten.</param>
+        /// <returns>Die gesuchte Kante.</returns>
+        public Edge<T> GetEdge(Vertex<T> from, Vertex<T> to)
+        {
+            if (!this.HasEdge(from, to))
+            {
+                throw new ArgumentException($"Von dem Knoten {from.ToString()} zu dem Knoten {to.ToString()} existiert keine Kante.");
+            }
+
+            if (this.IsDirected)
+            {
+                return this.Edges.Where(e => e.From.Equals(from) && e.To.Equals(to)).Single();
+            }
+            else
+            {
+                return this.Edges.Where(e => (e.From.Equals(from) && e.To.Equals(to)) || (e.To.Equals(from) && e.From.Equals(to))).ElementAt(0);
+            }
+        }
+        #endregion
+
         #region VerticesInSortOrder
         /// <summary>
         /// Liefert die Liste mit Vertices in sortierter Reihenfolge (sortiert nach ihrer Eigenschaft 'SortOrder')

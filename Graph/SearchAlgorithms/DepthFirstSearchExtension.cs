@@ -111,5 +111,82 @@ namespace GraphCollection.SearchAlgorithms
 
         }
         #endregion
+
+        #region HasCycle
+        /// <summary>
+        /// Prüft, ob der Graph einen Zyklus enthält.
+        /// </summary>
+        /// <typeparam name="T">Der Datentyp der Vertices.</typeparam>
+        /// <param name="graph">Der Graph.</param>
+        /// <returns>True, wenn der Graph einen Zyklus enthält, false wenn nicht.</returns>
+        public static bool HasCycle<T>(this Graph<T> graph)
+        {
+            // Die visited Values zwischenspeichern.
+            bool[] visitedVertices = new bool[graph.Vertices.Count];
+            for (int i = 0; i < graph.Vertices.Count; i++)
+            {
+                visitedVertices[i] = graph.Vertices[i].IsVisited;
+            }
+
+            bool[] visitedEdges = new bool[graph.Edges.Count];
+            for (int i = 0; i < graph.Edges.Count; i++)
+            {
+                visitedEdges[i] = graph.Edges[i].IsVisited;
+            }
+
+            // die Visited Values zurücksetzen
+            graph.ResetVisitedProperty();
+
+            bool hasCycle = HasCycleHelper<T>(graph, graph.Vertices[0]);
+
+            // Die Visitedvalues wieder auf den Ursprung setzen
+            for (int i = 0; i < graph.Vertices.Count; i++)
+            {
+                if (visitedVertices[i])
+                {
+                    graph.Vertices[i].Visit();
+                }
+            }
+
+            for (int i = 0; i < graph.Edges.Count; i++)
+            {
+                graph.Edges[i].IsVisited = visitedEdges[i];
+            }
+
+            return hasCycle;
+        }
+        #endregion
+
+        #region HasCycleHelper
+        /// <summary>
+        /// Rekursive Funktion, die nach einem Zyklus in einem Graphen sucht.
+        /// </summary>
+        /// <typeparam name="T">Der Datentyp der Vertices.</typeparam>
+        /// <param name="start">Der Knoten, von dem aus gesucht werden soll.</param>
+        /// <returns>True, wenn ein Zyklus gefunden wurde, false wenn nicht.</returns>
+        public static bool HasCycleHelper<T>(Graph<T> graph, Vertex<T> start)
+        {
+            if (start.IsVisited)
+            {
+                return true;
+            }
+
+            start.Visit();
+            foreach(Vertex<T> vertex in start.Neighbors)
+            {
+                if (!graph.GetEdge(start, vertex).IsVisited)
+                {
+                    graph.GetEdge(start, vertex).IsVisited = true;
+                    if (HasCycleHelper<T>(graph, vertex))
+                    {
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+        #endregion
     }
 }

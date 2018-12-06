@@ -28,6 +28,11 @@ namespace GraphCollection
         /// Gibt an ob die Kante gerichtet ist.
         /// </summary>
         public bool IsDirected { get; set; }
+
+        /// <summary>
+        /// Gibt an, ob die Kante schon besucht wurde.
+        /// </summary>
+        public bool IsVisited { get; set; }
         #endregion
 
         #region ctors
@@ -69,13 +74,26 @@ namespace GraphCollection
         }
 
         /// <summary>
-        /// Erzeugt eine neue Kante ohne Gewicht und ungereichtet        /// 
+        /// Erzeugt eine neue Kante ohne Gewicht und ungereichtet
         /// </summary>
         /// <param name="from">Der Knoten von dem die Kante ausgeht (wenn gerichtet).</param>
         /// <param name="to">Der Knoten in dem die Kante endet (wenn gerichtet).</param>        
         public Edge(Vertex<T> from, Vertex<T> to)
             : this(from: from, to: to, weight: null, isDirected: false)
         {
+        }
+
+        /// <summary>
+        /// Erzeugt eine neue Kante auf Basis einer bereits vorhandenen Kante.
+        /// </summary>
+        /// <param name="other">Die vorhandene Kante.</param>
+        public Edge(Edge<T> other)
+        {
+            this.From = other.From;
+            this.To = other.To;
+            this.IsDirected = other.IsDirected;
+            this.IsVisited = other.IsVisited;
+            this.Weight = other.Weight;
         }
         #endregion
 
