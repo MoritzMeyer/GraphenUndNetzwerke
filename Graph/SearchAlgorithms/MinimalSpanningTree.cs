@@ -55,12 +55,80 @@ namespace GraphCollection.SearchAlgorithms
         }
         #endregion
 
+        #region Prim
+        /// <summary>
+        /// Der Prim-Algorithmus für minimale Spannbäume
+        /// </summary>
+        /// <typeparam name="T">Der Datentyp des Graphen.</typeparam>
+        /// <param name="graph">Der Graph.</param>
+        /// <returns>Der minimale Spannbaum.</returns>
         public static Graph<T> Prim<T>(this Graph<T> graph)
         {
+            if (!graph.IsWeighted)
+            {
+                throw new InvalidOperationException("Der Algorithmus von Kruskal kann nur auf gewichteten Graphen durchgeführt werden.");
+            }
+
+            if (graph.IsDirected)
+            {
+                throw new InvalidOperationException("Der Algorithmus von Kruskal kann nur auf ungerichteten Graphen durchgeführt werden.");
+            }
+
             // Den minimalen Spannbaum mit einem beliebigen Knoten initialisieren
             Graph<T> minimalSpanningTree = new Graph<T>();
 
+            List<Vertex<T>> workingList = new List<Vertex<T>>();
+            foreach (Vertex<T> vertex in graph.Vertices)
+            {
+                vertex.SortOrder = int.MaxValue;
+                workingList.Add(vertex);
+            }
 
+            workingList.First().SortOrder = 0;
+            workingList = workingList.OrderBy(v => v.SortOrder).ToList();
+
+            while (workingList.Count > 0)
+            {
+                // Den ersten Knoten der Liste entnehmen
+                Vertex<T> actual = workingList.First();
+                workingList.Remove(actual);
+
+                // Den aktuellen Knoten dem Baum hinzufügen
+                if (!minimalSpanningTree.HasVertex(actual))
+                {
+                    minimalSpanningTree.AddVertex(new Vertex<T>(actual.Value));
+                }
+
+                // Für alle Nachbarn von actual, die in der WorkingList enthalten sind.
+                foreach (Vertex<T> neighbour in actual.Neighbors.Where(n => workingList.Contains(n)))
+                {
+                    Edge<T> actualEdge = graph.GetEdge(actual, neighbour);
+                    
+                    if (actualEdge.Weight < neighbour.SortOrder)
+                    {
+                        // Denn Nachbarn dem Baum hinzufügen, wenn noch nicht vorhanden.
+                        if (!minimalSpanningTree.HasVertex(neighbour))
+                        {
+                            minimalSpanningTree.AddVertex(new Vertex<T>(neighbour.Value));
+                        }
+
+                        // Eine möglich vorhandene Kante entfernen
+                        IEnumerable<Edge<T>> existingEdges = minimalSpanningTree.Edges.Where(e => e.From.Equals(neighbour) || e.To.Equals(neighbour));
+                        if (existingEdges.Any())
+                        {
+                            minimalSpanningTree.RemoveEdge(existingEdges.Single());
+                        }
+
+                        minimalSpanningTree.AddEdge(actual.Value, neighbour.Value, actualEdge.Weight);
+                        neighbour.SortOrder = actualEdge.Weight.Value;
+                    }
+                }
+
+                workingList = workingList.OrderBy(v => v.SortOrder).ToList();
+            }
+
+            return minimalSpanningTree;
         }
+        #endregion
     }
 }
