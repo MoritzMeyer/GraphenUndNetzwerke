@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace GraphCollection.SearchAlgorithms
 {
-    public static class MinimalSpanningTreeKruskal
+    public static class MinimalSpanningTree
     {
+        #region Kruskal
+        /// <summary>
+        /// Der Kruskal Algorithmus für minimale Spannbäume
+        /// </summary>
+        /// <typeparam name="T">Der Datentyp des Graphen.</typeparam>
+        /// <param name="graph">Der Graph.</param>
+        /// <returns>Der minimale Spannbaum.</returns>
         public static Graph<T> Kruskal<T>(this Graph<T> graph)
         {
             if (!graph.IsWeighted)
@@ -45,6 +52,15 @@ namespace GraphCollection.SearchAlgorithms
             }
 
             return minimalSpanningTree;
+        }
+        #endregion
+
+        public static Graph<T> Prim<T>(this Graph<T> graph)
+        {
+            // Den minimalen Spannbaum mit einem beliebigen Knoten initialisieren
+            Graph<T> minimalSpanningTree = new Graph<T>();
+
+
         }
     }
 }

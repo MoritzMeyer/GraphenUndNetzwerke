@@ -10,7 +10,7 @@ namespace GraphCollection.SearchAlgorithms
     {
         #region AllPairsShortestPath
         /// <summary>
-        /// Berechnet die AllPairsShortestPath
+        /// Berechnet die AllPairsShortestPath => Floyd-Warshall Algorithm
         /// </summary>
         /// <typeparam name="T">Der Datentyp.</typeparam>
         /// <param name="graph">Der Graph.</param>
