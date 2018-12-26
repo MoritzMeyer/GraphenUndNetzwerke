@@ -222,6 +222,24 @@ namespace GraphCollectionTest
             Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||1|1|1|0|1\r\n3||1|1|1|1|0\r\n4||0|0|1|1|1\r\n5||0|1|0|1|1\r\n", adjacencyMatrix);
         }
         #endregion
+
+        #region Copy_must_work
+        /// <summary>
+        /// Testet die Methode Copy
+        /// </summary>
+        [TestMethod]
+        public void Copy_must_work()
+        {
+            Graph<TwoBuckets> graph = GraphGenerator.BucketGraph(3, 5);
+            Graph<TwoBuckets> graphCopy = graph.Copy();
+
+            Assert.IsFalse(ReferenceEquals(graph.Vertices, graphCopy.Vertices));
+            Assert.IsFalse(ReferenceEquals(graph.Edges, graphCopy.Edges));
+
+            Assert.IsFalse(ReferenceEquals(graph.Vertices[0], graphCopy.Vertices[0]));
+            Assert.IsFalse(ReferenceEquals(graph.Edges[0], graphCopy.Edges[0]));
+        }
+        #endregion
     }
 }
 

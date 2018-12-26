@@ -54,10 +54,12 @@
     <Compile Include="DepthFirstSearchTest.cs" />
     <Compile Include="DijkstraExtensionTest.cs" />
     <Compile Include="EdgeTest.cs" />
+    <Compile Include="FlowGraphTest.cs" />
     <Compile Include="GraphGeneratorTest.cs" />
     <Compile Include="GraphTest.cs" />
     <Compile Include="ListExtensionsTest.cs" />
     <Compile Include="IntExtensionsTest.cs" />
+    <Compile Include="MaximumFlowExtensionsTest.cs" />
     <Compile Include="MinimalSpanningTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StronglyConnectedComponentsTest.cs" />

@@ -15,7 +15,20 @@ namespace GraphCollectionTest
         {
             Graph<TwoBuckets> graph = GraphGenerator.BucketGraph(3, 5);
 
-            Assert.IsTrue(graph.DepthFirstSearch(new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 0, 0)), new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 0, 4))));
+            Assert.IsTrue(graph.DepthFirstSearch(new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 0, 0)), new Vertex<TwoBuckets>(new TwoBuckets(3, 5, 3, 4)), out List<Edge<TwoBuckets>> path));
+
+            Assert.AreEqual(new TwoBuckets(3, 5, 0, 0), path[0].From.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 0, 5), path[0].To.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 0, 5), path[1].From.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 3, 2), path[1].To.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 3, 2), path[2].From.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 0, 2), path[2].To.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 0, 2), path[3].From.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 2, 0), path[3].To.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 2, 0), path[4].From.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 2, 5), path[4].To.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 2, 5), path[5].From.Value);
+            Assert.AreEqual(new TwoBuckets(3, 5, 3, 4), path[5].To.Value);
         }
         #endregion
 

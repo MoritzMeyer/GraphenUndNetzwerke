@@ -18,7 +18,7 @@ namespace GraphCollection
         public Graph(IEnumerable<Vertex<T>> vertices, IEnumerable<Edge<T>> edges, bool isDirected = false)
         {
             this.Vertices = new List<Vertex<T>>();
-            this.Edges = new List<Edge<T>>();
+            this.Edges = edges.ToList();
             this.IsDirected = isDirected;
 
             foreach (Vertex<T> vertex in vertices)
@@ -271,35 +271,13 @@ namespace GraphCollection
 
         #region AddEdge
         /// <summary>
-        /// Fügt dem Graphen eine ungewichtete Kante hinzu.
-        /// </summary>
-        /// <param name="valueFrom">Der Ausgangsknoten.</param>
-        /// <param name="valueTo">Der Eingangsknoten.</param>
-        /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddEdge(T valueFrom, T valueTo)
-        {
-            return this.AddEdge(new Vertex<T>(valueFrom), new Vertex<T>(valueTo));
-        }
-
-        /// <summary>
-        /// Fügt dem Graphen eine ungewichtete Kante hinzu.
-        /// </summary>
-        /// <param name="from">Der Ausgangsknoten.</param>
-        /// <param name="to">Der Eingangsknoten.</param>
-        /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddEdge(Vertex<T> from, Vertex<T> to)
-        {
-            return this.AddEdge(from, to, null);
-        }
-
-        /// <summary>
-        /// Fügt dem Graphen eine gewichtete Kante hinzu.
+        /// Fügt dem Graphen eine Kante hinzu.
         /// </summary>
         /// <param name="valueFrom">Der Wert des Knoten von dem die Kante ausgehen soll.</param>
         /// <param name="valueTo">Der Wert des Knoten in dem die Kante enden soll.</param>
-        /// <param name="weight">Das Gewicht der Kante (null, wenn ungewichtet).</param>
+        /// <param name="weight">Das Gewicht der Kante (wenn null, dann ungewichtet).</param>
         /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddEdge(T valueFrom, T valueTo, int? weight)
+        public bool AddEdge(T valueFrom, T valueTo, int? weight = null)
         {
             if (!this.HasVertexWithValue(valueFrom) || !this.HasVertexWithValue(valueTo))
             {
@@ -313,12 +291,13 @@ namespace GraphCollection
         }
 
         /// <summary>
-        /// Fügt dem Graphen eine gewichtete Kante hinzu.
+        /// Fügt dem Graphen eine Kante hinzu.
         /// </summary>
         /// <param name="from">Der Knoten von dem die Kante ausgeht.</param>
         /// <param name="to">Der Knoten in dem die Kante enden soll.</param>
+        /// <param name="weight"> Das Gewicht der Kante (wenn null, dann ungewichtet). </param>
         /// <returns>True, wenn die Kante hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddEdge(Vertex<T> from, Vertex<T> to, int? weight)
+        public bool AddEdge(Vertex<T> from, Vertex<T> to, int? weight = null)
         {
             if (!this.HasVertex(from) || !this.HasVertex(to))
             {
@@ -473,6 +452,62 @@ namespace GraphCollection
             }
 
             return stringMatrix;
+        }
+        #endregion
+
+        #region Copy
+        /// <summary>
+        /// Erstellt eine Kopie des Graphens.
+        /// </summary>
+        /// <returns></returns>
+        public Graph<T> Copy()
+        {
+            List<Vertex<T>> vertices = new List<Vertex<T>>();
+            this.Vertices.ForEach(v => 
+            {
+                vertices.Add(new Vertex<T>(v.Value)
+                {
+                    IsVisited = v.IsVisited,
+                    InDegree = v.InDegree,
+                    OutDegree = v.OutDegree,
+                    DijkstraDistance = v.DijkstraDistance, 
+                    DijkstraAncestor = v.DijkstraAncestor,
+                    Number = v.Number, 
+                    SortOrder = v.SortOrder
+                });
+            });
+
+            // Die Referencen der Nachbarn ermitteln und setzen.
+            this.Vertices.ForEach(v =>
+            {
+                Vertex<T> vCopy = vertices.Where(c => c.Equals(v)).Single();
+                v.Neighbors.ForEach(n =>
+                {
+                    Vertex<T> neighborRef = vertices.Where(nRef => nRef.Equals(n)).Single();
+                    vCopy.Neighbors.Add(neighborRef);
+                });
+            });
+
+            List<Edge<T>> edges = new List<Edge<T>>();
+            this.Edges.ForEach(e =>
+            {
+                // die Referenzen der Knoten holen.
+                Vertex<T> from = vertices.Where(v => v.Equals(e.From)).Single();
+                Vertex<T> to = vertices.Where(v => v.Equals(e.To)).Single();
+
+                edges.Add(new Edge<T>(from, to)
+                {
+                    Capacity = e.Capacity,
+                    Flow = e.Flow,
+                    IsDirected = e.IsDirected,
+                    Weight = e.Weight,
+                    IsVisited = e.IsVisited
+                });
+            });
+
+            Graph<T> copy = new Graph<T>(vertices, edges, this.IsDirected);
+
+            return copy;
         }
         #endregion
     }

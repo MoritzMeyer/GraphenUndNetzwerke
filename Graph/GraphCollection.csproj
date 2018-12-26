@@ -47,6 +47,7 @@
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="FlowGraph.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="GraphGenerator.cs" />
     <Compile Include="IGraph.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="SearchAlgorithms\AllPairsShortestPathExtension.cs" />
     <Compile Include="SearchAlgorithms\DepthFirstSearchExtension.cs" />
     <Compile Include="SearchAlgorithms\DijkstraExtension.cs" />
+    <Compile Include="SearchAlgorithms\MaximumFlowExtensions.cs" />
     <Compile Include="SearchAlgorithms\MinimalSpanningTree.cs" />
     <Compile Include="SearchAlgorithms\StronglyConnectedComponents.cs" />
     <Compile Include="SearchAlgorithms\TopSortExtension.cs" />

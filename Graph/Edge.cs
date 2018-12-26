@@ -33,9 +33,35 @@ namespace GraphCollection
         /// Gibt an, ob die Kante schon besucht wurde.
         /// </summary>
         public bool IsVisited { get; set; }
+
+        /// <summary>
+        /// Die Kapazität einer Kante in einem Flussgraphen.
+        /// </summary>
+        public int? Capacity { get; set; }
+
+        /// <summary>
+        /// Der Fluss über eine Kante in einem Flussgraphen.
+        /// </summary>
+        public int? Flow { get; set; }
         #endregion
 
         #region ctors
+        /// <summary>
+        /// Erstellt eine neue Fluss-Kante für einen Flussgraphen.
+        /// </summary>
+        /// <param name="from">Der ausgehende Knoten.</param>
+        /// <param name="to">Der eingehende Knoten.</param>
+        /// <param name="capacity">Die Kapazität der Flusskante.</param>
+        /// <param name="flow">Die größes des aktuellen Flusses über diese Kante.</param>
+        public Edge(Vertex<T> from, Vertex<T> to, int capacity, int flow, bool isDirected = false)
+            : this(from, to)
+        {
+            this.Capacity = capacity;
+            this.Flow = flow;
+            this.Weight = null;
+            this.IsDirected = isDirected;
+        }
+
         /// <summary>
         /// Erstellt eine neue Kante gewichtet und gerichtet.
         /// </summary>
@@ -43,23 +69,12 @@ namespace GraphCollection
         /// <param name="to">Der Knoten in dem die Kante endet (wenn gerichtet).</param>
         /// <param name="weight">Das Gewicht der Kante (null, wenn ungewichtet)</param>
         /// <param name="isDirected">Gibt an ob die Kante gerichtet ist.</param>
-        public Edge(Vertex<T> from, Vertex<T> to, int? weight, bool isDirected)
+        public Edge(Vertex<T> from, Vertex<T> to, int? weight, bool isDirected = false)
         {
             this.From = from;
             this.To = to;
             this.Weight = weight;
             this.IsDirected = isDirected;
-        }
-
-        /// <summary>
-        /// Erstellt eine neue Kante gewichtet und ungerichtet
-        /// </summary>
-        /// <param name="from">Der Knoten von dem die Kante ausgeht (wenn gerichtet).</param>
-        /// <param name="to">Der Knoten in dem die Kante endet (wenn gerichtet).</param>
-        /// <param name="weight">Das Gewicht der Kante (null, wenn ungewichtet)</param>
-        public Edge(Vertex<T> from, Vertex<T> to, int? weight)
-            : this(from: from, to: to, weight: weight, isDirected: false)
-        {
         }
 
         /// <summary>

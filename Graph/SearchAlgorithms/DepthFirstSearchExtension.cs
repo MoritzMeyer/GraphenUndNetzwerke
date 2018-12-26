@@ -18,7 +18,7 @@ namespace GraphCollection.SearchAlgorithms
         /// <param name="start">Der Start-Vertex, von dem aus gesucht werden soll.</param>
         /// <param name="goal">Der gesuchte Vertex.</param>
         /// <returns>True, wenn die Suche erfolgreich war, false sonst.</returns>
-        public static bool DepthFirstSearch<T>(this Graph<T> graph, Vertex<T> start, Vertex<T> goal)
+        public static bool DepthFirstSearch<T>(this Graph<T> graph, Vertex<T> start, Vertex<T> goal, out List<Edge<T>> path)
         {
             Stack<Vertex<T>> stack = new Stack<Vertex<T>>();
             graph.ResetVisitedProperty();
@@ -34,7 +34,10 @@ namespace GraphCollection.SearchAlgorithms
                 throw new ArgumentException($"Der Graph enthält den Zielknoten({goal}) nicht.");
             }
 
-            bool sucess = SearchHelper<T>(ref stack, start, goal);           
+            bool sucess = SearchHelper<T>(ref stack, start, goal);
+
+            // Die Liste mit Kanten auf dem Pfad initialisieren.
+            path = new List<Edge<T>>();
 
             if (sucess)
             {
@@ -44,12 +47,18 @@ namespace GraphCollection.SearchAlgorithms
                 while(stack.Count > 0)
                 {
                     Vertex<T> actual = stack.Pop();
-                    if (graph.HasEdge(previous, actual))
+                    if (graph.HasEdge(actual, previous))
                     {
+                        // Die Kante dem Pfad hinzufügen.
+                        path.Add(graph.GetEdge(actual, previous));
+
                         previous = actual;
                         output = previous.ToString() + " -> " + output;
                     }
                 }
+
+                // Die Liste mit Kanten auf dem Pfad wird in falscher Reihenfolge befüllt, hier die richtige Reihenfolge herstellen.
+                path.Reverse();
 
                 Console.WriteLine("DepthFirstSearch was successful!: ");
                 Console.WriteLine(output);
@@ -94,6 +103,8 @@ namespace GraphCollection.SearchAlgorithms
                             neighbor.Visit();
                             if (neighbor.Equals(goal))
                             {
+                                // Das Ziel muss auch noch auf den Stack.
+                                stack.Push(neighbor);
                                 return true;
                             }
 
