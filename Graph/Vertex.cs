@@ -13,7 +13,7 @@ namespace GraphCollection
         /// <summary>
         /// Die Liste mit Nachbarn des Knotens.
         /// </summary>
-        public virtual List<Vertex<T>> Neighbors { get; internal set; }
+        //public virtual List<Vertex<T>> Neighbors { get; internal set; }
 
         /// <summary>
         /// Der Wert des Knotens.
@@ -31,14 +31,9 @@ namespace GraphCollection
         public int? Number { get; set; }
 
         /// <summary>
-        /// Die Anzahl an Kanten, die in dem Knoten enden.
+        /// Die Anzahl an eingehenden Kanten.
         /// </summary>
-        public int InDegree { get; set; }
-
-        /// <summary>
-        /// Die Anzahl an Kanten, die von diesem Knoten ausgehen.
-        /// </summary>
-        public int OutDegree { get; set; }
+        public int? InDegree { get; set; }
 
         /// <summary>
         /// Die Rangfolge in einer Sortierung.
@@ -61,22 +56,11 @@ namespace GraphCollection
         /// Erzeugt eine neue Instanz der Klasse.
         /// </summary>
         /// <param name="value">Der Wert des Knotens.</param>
-        public Vertex(T value)
-            : this(value, new List<Vertex<T>>())
-        {
-        }
-
-        /// <summary>
-        /// Erzeugt eine neue Instanz der Klasse.
-        /// </summary>
-        /// <param name="value">Der Wert des Knotens.</param>
         /// <param name="neighbors"></param>
-        public Vertex(T value, List<Vertex<T>> neighbors)
+        public Vertex(T value)
         {
             this.Value = value;
-            this.Neighbors = neighbors;
             this.IsVisited = false;
-            this.OutDegree = neighbors.Count();
         }
         #endregion
 
@@ -87,100 +71,6 @@ namespace GraphCollection
         public void Visit()
         {
             this.IsVisited = true;
-        }
-        #endregion
-
-        #region AddNeighbor
-        /// <summary>
-        /// Fügt dem Knoten einen neuen Nachbarn hinzu.
-        /// </summary>
-        /// <param name="newNeighbor">Der neue Nachbar.</param>
-        /// <returns>True, wenn der Nachbar hinzugefügt werden konnte, false wenn nicht.</returns>
-        public bool AddNeighbor(Vertex<T> newNeighbor)
-        {
-            // Wenn die Knoten bereits vorhanden ist, nicht erneut hinzufügen und false liefern.
-            if (this.Neighbors.Contains(newNeighbor))
-            {
-                return false;
-            }
-
-            this.Neighbors.Add(newNeighbor);
-            return true;
-        }
-        #endregion
-
-        #region AddNeighbors
-        /// <summary>
-        /// Fügt dem Knoten eine LIste mit Nachbarn hinzu.
-        /// </summary>
-        /// <param name="newNeighbors">Die neuen Nachbarn.</param>
-        /// <returns>True, wenn die Nachbarn hinzugefügt werden konnten, false wenn nicht.</returns>
-        public bool AddNeighbors(HashSet<Vertex<T>> newNeighbors)
-        {
-            foreach(Vertex<T> vertex in newNeighbors)
-            {
-                if (this.Neighbors.Contains(vertex))
-                {
-                    return false;
-                }
-            }
-
-            foreach(Vertex<T> vertex in newNeighbors)
-            {
-                this.Neighbors.Add(vertex);
-            }
-
-            return true;
-        }
-        #endregion
-
-        #region RemoveNeighbor
-        /// <summary>
-        /// Entfernt eine Kante von diesem Knoten.
-        /// </summary>
-        /// <param name="vertex">Der Knoten wessen Kante entfernt werden soll.</param>
-        /// <returns>True, wennd die Kante entfernt werden konnte, false wenn nicht.</returns>
-        public bool RemoveNeighbor(Vertex<T> vertex)
-        {
-           return this.Neighbors.Remove(vertex);
-        }
-        #endregion
-
-        #region HasNeighbor
-        /// <summary>
-        /// Prüft, der übergebene Knoten ein Nachbar dieses Knoten ist.
-        /// </summary>
-        /// <param name="vertex">Der Knoten zu dem die Nachbarschaft geprüft werden soll.</param>
-        /// <returns>True, der übergebebe Knoten Nachbar ist, false wenn nicht.</returns>
-        public bool HasNeighbor(Vertex<T> vertex)
-        {
-            return this.Neighbors.Contains(vertex);
-        }
-        #endregion
-
-        #region CountVerticesOfSubGraph
-        /// <summary>
-        /// Zählt die Anzahl an Knoten in einem möglichen SubGraph, ausgehend von diesem Knoten.
-        /// </summary>
-        /// <returns>Die Anzahl an Knoten in dem Subgraph.</returns>
-        public int CountVerticesOfSubGraph()
-        {
-            // TODO: Die Funktion muss glaube ich in den Graphen.
-            int sum = 1;
-
-            if (this.Neighbors.Count == 0)
-            {
-                return sum;
-            }
-            else
-            {
-                foreach(Vertex<T> neighbor in this.Neighbors)
-                {
-                    sum += neighbor.CountVerticesOfSubGraph();
-                }
-
-                return sum;
-            }
         }
         #endregion
 
@@ -221,17 +111,6 @@ namespace GraphCollection
         public override string ToString()
         {
             return this.Value.ToString();
-        }
-        #endregion
-
-        #region ToCompleteString
-        /// <summary>
-        /// Erzeugt einen String, welcher diesen Knoten und alle seine Nachbarn ausgibt.
-        /// </summary>
-        /// <returns>Den String.</returns>
-        public string ToCompleteString()
-        {
-            return this.Value.ToString() + ": " + this.Neighbors.Select(n => "-" + n.ToString()).Aggregate((a, b) => a + ", " + b);
         }
         #endregion
     }

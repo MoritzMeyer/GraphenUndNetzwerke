@@ -157,16 +157,6 @@ namespace GraphCollection
             this.Vertices.TryGetValue(from, out from);
             this.Vertices.TryGetValue(to, out to);
 
-            if (!from.AddNeighbor(to))
-            {
-                return false;
-            }
-
-            if (!this.IsDirected)
-            {
-                to.AddNeighbor(from);
-            }
-
             Edge<T> edge = new Edge<T>(from, to, capacity, flow, isDirected: this.IsDirected);
 
             if (this.Edges.Contains(edge))
@@ -192,23 +182,10 @@ namespace GraphCollection
                 vertices.Add(new Vertex<T>(v.Value)
                 {
                     IsVisited = v.IsVisited,
-                    InDegree = v.InDegree,
-                    OutDegree = v.OutDegree,
                     DijkstraDistance = v.DijkstraDistance,
                     DijkstraAncestor = v.DijkstraAncestor,
                     Number = v.Number,
                     SortOrder = v.SortOrder
-                });
-            });
-
-            // Die Referencen der Nachbarn ermitteln und setzen.
-            this.Vertices.ForEach(v =>
-            {
-                Vertex<T> vCopy = vertices.Where(c => c.Equals(v)).Single();
-                v.Neighbors.ForEach(n =>
-                {
-                    Vertex<T> neighborRef = vertices.Where(nRef => nRef.Equals(n)).Single();
-                    vCopy.Neighbors.Add(neighborRef);
                 });
             });
 

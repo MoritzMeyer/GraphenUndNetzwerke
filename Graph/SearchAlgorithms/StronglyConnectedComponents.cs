@@ -37,7 +37,7 @@ namespace GraphCollection.SearchAlgorithms
             {
                 if (vertex.Number == null)
                 {
-                    StrongConnect(vertex);
+                    StrongConnect(vertex, graph);
                 }
             }
 
@@ -50,7 +50,8 @@ namespace GraphCollection.SearchAlgorithms
         /// Die Funktion geht von einem Knoten aus einem Graphen aus los und sucht eine StronglyConnectetComponent.
         /// </summary>
         /// <param name="v">Der Knoten von dem aus gesucht werden soll.</param>
-        private static void StrongConnect(Vertex<T> v)
+        /// <param name="graph">Der Graph.</param>
+        private static void StrongConnect(Vertex<T> v, Graph<T> graph)
         {
             lowpt.Add(v, i);
             lowvine.Add(v, i);
@@ -58,15 +59,16 @@ namespace GraphCollection.SearchAlgorithms
             i++;
             vertexStack.Push(v);
 
-            foreach (Vertex<T> w in v.Neighbors)
+            List<Vertex<T>> neighbours = graph.GetNeighbours(v);
+            foreach (Vertex<T> w in neighbours)
             {
                 if (w.Number == null) // (v,w) is a tree arc
                 {
-                    StrongConnect(w);
+                    StrongConnect(w, graph);
                     lowpt[v] = Math.Min(lowpt[v], lowpt[w]);
                     lowvine[v] = Math.Min(lowvine[v], lowvine[w]);
                 }
-                else if (w.Neighbors.Contains(v)) // (v,w) is a frond
+                else if (graph.GetNeighbours(w).Contains(v)) // (v,w) is a frond
                 {
                     lowpt[v] = Math.Min(lowpt[v], w.Number.Value);
                 }

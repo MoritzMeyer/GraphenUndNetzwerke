@@ -22,7 +22,7 @@ namespace GraphCollection.SearchAlgorithms
             // Die InDegrees der Knoten berechnen.
             foreach(Vertex<T> vertex in graph.Vertices)
             {
-                foreach(Vertex<T> neighbor in vertex.Neighbors)
+                foreach(Vertex<T> neighbor in graph.GetNeighbours(vertex))
                 {
                     neighbor.InDegree++;
                 }
@@ -37,7 +37,8 @@ namespace GraphCollection.SearchAlgorithms
                 Vertex<T> actualNode = workerQueue.Dequeue();
                 actualNode.SortOrder = sortOrder++;
 
-                foreach(Vertex<T> neighbor in actualNode.Neighbors)
+                List<Vertex<T>> neighbours = graph.GetNeighbours(actualNode);
+                foreach(Vertex<T> neighbor in neighbours)
                 {
                     neighbor.InDegree--;
                     if(neighbor.InDegree == 0)
@@ -75,7 +76,7 @@ namespace GraphCollection.SearchAlgorithms
             {
                 Vertex<T> actualVertex = workerQueue.Dequeue();
 
-                denominator = denominator * actualVertex.CountVerticesOfSubGraph();
+                denominator = denominator * graph.CountVerticesOfSubgraph(actualVertex);
             }
 
             return numerator / denominator;

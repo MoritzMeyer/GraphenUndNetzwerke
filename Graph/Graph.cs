@@ -120,20 +120,15 @@ namespace GraphCollection
         /// <returns>True, wenn der Knoten hinzugefügt werden konnte, false wenn nicht.</returns>
         public bool AddVertex(Vertex<T> vertex)
         {
+            // Wenn der neue Knoten bereits vorhanden, diesen nicht erneut hinzufügen.
             if (this.Vertices.Contains(vertex))
             {
                 return false;
             }
-            else
-            {
-                // Wenn der neue Vertex bereits Nachbarn besitzt, diese löschen
-                if (vertex.Neighbors.IsNotNullOrEmpty())
-                {
-                    vertex.Neighbors = new List<Vertex<T>>();                    
-                }
-                this.Vertices.Add(vertex);
-                return true;
-            }
+
+            // Den neuen Knoten hinzufügen.
+            this.Vertices.Add(vertex);
+            return true;
         }
 
         /// <summary>
@@ -174,16 +169,7 @@ namespace GraphCollection
         /// <returns></returns>
         public bool RemoveVertex(Vertex<T> vertex)
         {
-            vertex.Neighbors = new List<Vertex<T>>();
-
-            for (int i = 0; i < this.Vertices.Count(); i++)
-            {
-                if (this.Vertices[i].HasNeighbor(vertex))
-                {
-                    this.Vertices[i].RemoveNeighbor(vertex);
-                }
-            }
-
+            // Alle Kanten von oder zu diesem Knoten löschen.
             for (int i = 0; i < this.Edges.Count(); i++)
             {
                 if (this.Edges[i].From.Equals(vertex) || this.Edges[i].To.Equals(vertex))
@@ -231,15 +217,6 @@ namespace GraphCollection
             this.Vertices.TryGetValue(edge.From, out Vertex<T> from);
             this.Vertices.TryGetValue(edge.To, out Vertex<T> to);
 
-            // Den Nachbarn to aus form entfernens
-            from.RemoveNeighbor(to);
-
-            // Wenn ungerichtet auch den from Nachbarn aus to entfernen
-            if (!this.IsDirected)
-            {
-                to.RemoveNeighbor(from);
-            }
-
             return this.Edges.Remove(edge);
         }
 
@@ -253,15 +230,6 @@ namespace GraphCollection
         {
             this.Vertices.TryGetValue(from, out from);
             this.Vertices.TryGetValue(to, out to);
-
-            // Den Nachbarn to aus form entfernens
-            from.RemoveNeighbor(to);
-
-            // Wenn ungerichtet auch den from Nachbarn aus to entfernen
-            if (!this.IsDirected)
-            {
-                to.RemoveNeighbor(from);
-            }
 
             Edge<T> edge = this.Edges.Where(e => e.From.Equals(from) && e.To.Equals(to)).Single();
 
@@ -306,16 +274,6 @@ namespace GraphCollection
 
             this.Vertices.TryGetValue(from, out from);
             this.Vertices.TryGetValue(to, out to);
-
-            if(!from.AddNeighbor(to))
-            {
-                return false;
-            }
-
-            if (!this.IsDirected)
-            {
-                to.AddNeighbor(from);
-            }
 
             Edge<T> edge = new Edge<T>(from, to, weight, this.IsDirected);
 
@@ -370,6 +328,78 @@ namespace GraphCollection
             else
             {
                 return this.Edges.Where(e => (e.From.Equals(from) && e.To.Equals(to)) || (e.To.Equals(from) && e.From.Equals(to))).ElementAt(0);
+            }
+        }
+        #endregion
+
+        #region GetNeighbours
+        /// <summary>
+        /// Ermittelt für einen Knoten aus dem Graphen alle seine Nachbarn.
+        /// </summary>
+        /// <param name="vertex">Der Knoten für den die Nachbarn ermittelt werden sollen.</param>
+        /// <param name="isDirected">Für ungerichtete Graphen kann hiermit angegeben werden, dass die 
+        /// Rückwärtigenkanten nicht als Nachbarkanten gezählt werden.</param>
+        /// <returns>Die Liste mit Nachbarn.</returns>
+        public List<Vertex<T>> GetNeighbours(Vertex<T> vertex, bool isDirected = false)
+        {
+            // Es kann sinnvoll sein auch für ungerichtete Graphen die Suche nach Nachbarn nur in eine Richtung zu suchen.
+            isDirected = this.IsDirected || isDirected;
+
+            // von allen Kanten bei denen 'vertex' der ausgehende Knoten ist die eingehenden Knoten (die Nachbarn) liefern.
+            List<Vertex<T>> neighbours = this.Edges
+                .Where(e => e.From.Equals(vertex))
+                .Select(e => e.To)
+                .ToList();
+
+            // Wenn der Graph ungerichtet ist auch die 'rückwärtigen' Kanten berücksichtigen.
+            if (!isDirected)
+            {
+                neighbours.AddRange(this.Edges
+                    .Where(e => e.To.Equals(vertex))
+                    .Select(e => e.From));
+            }
+
+            // Das Ergebnis lierfern.
+            return neighbours;            
+        }
+        #endregion
+
+        #region HasNeighbour
+        /// <summary>
+        /// Prüft ob ein Knoten einen anderen Knoten als Nachbarn hat.
+        /// </summary>
+        /// <param name="vertex">Der Knoten.</param>
+        /// <param name="neighbour">Der zu prüfende Nachbar des Knotens.</param>
+        /// <returns>True, wenn 'neighbour' ein Nachbar von 'vertex' ist.</returns>
+        public bool HasNeighbour(Vertex<T> vertex, Vertex<T> neighbour)
+        {
+            return this.GetNeighbours(vertex).Contains(neighbour);
+        }
+        #endregion
+
+        #region CountVerticesOfSubgraph
+        /// <summary>
+        /// Berechnet die Anzahl an Knoten eines Subgraphen ausgehenden von dem übergebenen Vertex.
+        /// </summary>
+        /// <param name="vertex">Der Knoten von dem aus die größe des Subgraphen berechnet werden soll.</param>
+        /// <returns>Die Anzahl an Knoten in dem Subgraphen.</returns>
+        public int CountVerticesOfSubgraph(Vertex<T> vertex)
+        {
+            int sum = 1;
+
+            List<Vertex<T>> neighbours = this.GetNeighbours(vertex, true);
+            if (neighbours.Count() == 0)
+            {
+                return sum;
+            }
+            else
+            {
+                foreach(Vertex<T> neighbour in neighbours)
+                {
+                    sum += this.CountVerticesOfSubgraph(neighbour);
+                }
+
+                return sum;
             }
         }
         #endregion
@@ -468,23 +498,10 @@ namespace GraphCollection
                 vertices.Add(new Vertex<T>(v.Value)
                 {
                     IsVisited = v.IsVisited,
-                    InDegree = v.InDegree,
-                    OutDegree = v.OutDegree,
                     DijkstraDistance = v.DijkstraDistance, 
                     DijkstraAncestor = v.DijkstraAncestor,
                     Number = v.Number, 
                     SortOrder = v.SortOrder
-                });
-            });
-
-            // Die Referencen der Nachbarn ermitteln und setzen.
-            this.Vertices.ForEach(v =>
-            {
-                Vertex<T> vCopy = vertices.Where(c => c.Equals(v)).Single();
-                v.Neighbors.ForEach(n =>
-                {
-                    Vertex<T> neighborRef = vertices.Where(nRef => nRef.Equals(n)).Single();
-                    vCopy.Neighbors.Add(neighborRef);
                 });
             });
 

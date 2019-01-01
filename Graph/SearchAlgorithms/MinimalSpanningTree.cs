@@ -100,7 +100,8 @@ namespace GraphCollection.SearchAlgorithms
                 }
 
                 // Für alle Nachbarn von actual, die in der WorkingList enthalten sind.
-                foreach (Vertex<T> neighbour in actual.Neighbors.Where(n => workingList.Contains(n)))
+                List<Vertex<T>> neighbours = graph.GetNeighbours(actual);
+                foreach (Vertex<T> neighbour in neighbours.Where(n => workingList.Contains(n)))
                 {
                     Edge<T> actualEdge = graph.GetEdge(actual, neighbour);
                     

@@ -34,7 +34,7 @@ namespace GraphCollection.SearchAlgorithms
                 throw new ArgumentException($"Der Graph enthält den Zielknoten({goal}) nicht.");
             }
 
-            bool sucess = SearchHelper<T>(ref stack, start, goal);
+            bool sucess = SearchHelper<T>(graph, ref stack, start, goal);
 
             // Die Liste mit Kanten auf dem Pfad initialisieren.
             path = new List<Edge<T>>();
@@ -76,12 +76,13 @@ namespace GraphCollection.SearchAlgorithms
         /// <summary>
         /// Hilfsmethode für die Tiefensuche.
         /// </summary>
+        /// <param name="graph">Der Graph.</param>
         /// <typeparam name="T">Der Datentyp der Werte in den Vertices.</typeparam>
         /// <param name="stack">Der Stack mit den abzuarbeitenden Vertices.</param>
         /// <param name="start">Der Start Vertex.</param>
         /// <param name="goal">Der Ziel Vertex.</param>
         /// <returns>True, wenn der gesuchte Vertex gefunden wurde, false wenn nicht.</returns>
-        internal static bool SearchHelper<T>(ref Stack<Vertex<T>> stack, Vertex<T> start, Vertex<T> goal)
+        internal static bool SearchHelper<T>(Graph<T> graph, ref Stack<Vertex<T>> stack, Vertex<T> start, Vertex<T> goal)
         {
             stack.Push(start);
             start.Visit();
@@ -94,9 +95,10 @@ namespace GraphCollection.SearchAlgorithms
             while (stack.Count > 0)
             {
                 Vertex<T> actual = stack.First();
-                if (actual.Neighbors.Where(n => !n.IsVisited).Any())
+                List<Vertex<T>> neighbours = graph.GetNeighbours(actual);
+                if (neighbours.Where(n => !n.IsVisited).Any())
                 {
-                    foreach (Vertex<T> neighbor in actual.Neighbors)
+                    foreach (Vertex<T> neighbor in neighbours)
                     {
                         if (!neighbor.IsVisited)
                         {
@@ -183,7 +185,8 @@ namespace GraphCollection.SearchAlgorithms
             }
 
             start.Visit();
-            foreach(Vertex<T> vertex in start.Neighbors)
+            List<Vertex<T>> neighbours = graph.GetNeighbours(start);
+            foreach(Vertex<T> vertex in neighbours)
             {
                 if (!graph.GetEdge(start, vertex).IsVisited)
                 {
