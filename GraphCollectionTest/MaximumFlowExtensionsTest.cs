@@ -62,15 +62,15 @@ namespace GraphCollectionTest
             maxFlowGraph = flowGraph.FordFulkerson();
 
             // Die Flüsse über die Kanten überprüfen.
-            Assert.AreEqual(5, maxFlowGraph.Edges[0].Flow);
-            Assert.AreEqual(5, maxFlowGraph.Edges[1].Flow);
-            Assert.AreEqual(1, maxFlowGraph.Edges[2].Flow);
+            Assert.AreEqual(4, maxFlowGraph.Edges[0].Flow);
+            Assert.AreEqual(6, maxFlowGraph.Edges[1].Flow);
+            Assert.AreEqual(0, maxFlowGraph.Edges[2].Flow);
             Assert.AreEqual(4, maxFlowGraph.Edges[3].Flow);
             Assert.AreEqual(3, maxFlowGraph.Edges[4].Flow);
             Assert.AreEqual(3, maxFlowGraph.Edges[5].Flow);
-            Assert.AreEqual(3, maxFlowGraph.Edges[6].Flow);
-            Assert.AreEqual(4, maxFlowGraph.Edges[7].Flow);
-            Assert.AreEqual(6, maxFlowGraph.Edges[8].Flow);
+            Assert.AreEqual(2, maxFlowGraph.Edges[6].Flow);
+            Assert.AreEqual(5, maxFlowGraph.Edges[7].Flow);
+            Assert.AreEqual(5, maxFlowGraph.Edges[8].Flow);
         }
         #endregion
 

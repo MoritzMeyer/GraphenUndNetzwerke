@@ -39,7 +39,7 @@ namespace GraphCollection.SearchAlgorithms
 
             while(workingList.Count > 0)
             {
-                
+                // Ermittel den Knoten mit der aktuell geringsten Dijkstra Distanz
                 Vertex<T> actual = graph.Vertices
                     .Where(v => !v.IsVisited)
                     .Aggregate((curMin, v) => 
@@ -48,22 +48,22 @@ namespace GraphCollection.SearchAlgorithms
                 workingList.Remove(actual);
                 actual.Visit();
 
-                // Prüfe alle ausgehenden Kanten des aktuellen Vertex
+                // Dijkstradistanz und -vorgänger anpassen (falls nötig) für alle Nachbarknoten der ausgehenden Kanten des aktuellen Knotens
                 foreach (Edge<T> edge in graph.Edges.Where(e => e.From.Equals(actual)))
                 {
-                    if (graph.GetVertex(edge.From).DijkstraDistance + edge.Weight < graph.GetVertex(edge.To).DijkstraDistance)
+                    if (workingList.Contains(edge.To) && graph.GetVertex(edge.From).DijkstraDistance + edge.Weight < graph.GetVertex(edge.To).DijkstraDistance)
                     {
                         edge.To.DijkstraDistance = edge.From.DijkstraDistance + edge.Weight;
                         edge.To.DijkstraAncestor = actual;
                     }
                 }
             
-                // im ungerichteten Graphen müssen auch die rückläufigen Kanten geprüft werden.
+                // im ungerichteten Graphen müssen auch die Nachbarn der rückläufigen Kanten angepasst werden.
                 if (!graph.IsDirected)
                 {
                     foreach(Edge<T> edge in graph.Edges.Where(e => e.To.Equals(actual)))
                     {
-                        if (graph.GetVertex(edge.To).DijkstraDistance + edge.Weight < graph.GetVertex(edge.From).DijkstraDistance)
+                        if (workingList.Contains(edge.From) && graph.GetVertex(edge.To).DijkstraDistance + edge.Weight < graph.GetVertex(edge.From).DijkstraDistance)
                         {
                             edge.From.DijkstraDistance = edge.To.DijkstraDistance + edge.Weight;
                             edge.From.DijkstraAncestor = actual;

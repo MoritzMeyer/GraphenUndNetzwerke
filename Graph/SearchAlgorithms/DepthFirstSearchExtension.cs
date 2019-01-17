@@ -47,7 +47,7 @@ namespace GraphCollection.SearchAlgorithms
                 while(stack.Count > 0)
                 {
                     Vertex<T> actual = stack.Pop();
-                    if (graph.HasEdge(actual, previous))
+                    if (graph.HasEdge(actual, previous) && actual.IsVisited)
                     {
                         // Die Kante dem Pfad hinzufügen.
                         path.Add(graph.GetEdge(actual, previous));
@@ -84,6 +84,7 @@ namespace GraphCollection.SearchAlgorithms
         /// <returns>True, wenn der gesuchte Vertex gefunden wurde, false wenn nicht.</returns>
         internal static bool SearchHelper<T>(Graph<T> graph, ref Stack<Vertex<T>> stack, Vertex<T> start, Vertex<T> goal)
         {
+            // Die Suche am Startknoten beginnen.
             stack.Push(start);
             start.Visit();
 
@@ -94,34 +95,41 @@ namespace GraphCollection.SearchAlgorithms
 
             while (stack.Count > 0)
             {
+                // Nehme den ersten Knoten vom Stack.
                 Vertex<T> actual = stack.First();
+                actual.Visit();
+
+                // Durchsuche alle unbesuchten Nachbarn des aktuellen Knotens.
                 List<Vertex<T>> neighbours = graph.GetNeighbours(actual);
                 if (neighbours.Where(n => !n.IsVisited).Any())
                 {
-                    foreach (Vertex<T> neighbor in neighbours)
+                    foreach (Vertex<T> neighbour in neighbours.Where(n => !n.IsVisited))
                     {
-                        if (!neighbor.IsVisited)
+                        if (neighbour.Equals(goal))
                         {
-                            neighbor.Visit();
-                            if (neighbor.Equals(goal))
-                            {
-                                // Das Ziel muss auch noch auf den Stack.
-                                stack.Push(neighbor);
-                                return true;
-                            }
+                            // den Loesungsstack erstellen
+                            //stack = new Stack<Vertex<T>>(stack.Where(v => v.IsVisited));
 
-                            stack.Push(neighbor);
+                            // den Zielknoten auf den Stack legen.
+                            neighbour.Visit();
+                            stack.Push(neighbour);
+                            return true;
                         }
+
+                        // Der Nachbar war noch nicht besucht und koennte auf dem gesuchten Weg liegen.
+                        stack.Push(neighbour);
                     }
                 }
                 else
                 {
+                    // Wenn der aktuelle Knoten keine unbesuchten Nachbarn mehr hat,
+                    // liegt er nicht auf dem gesuchten Weg
                     stack.Pop();
                 }
             }
 
+            // Der gesuchte Knoten konnten nicht gefunden werden.
             return false;
-
         }
         #endregion
 
