@@ -1,4 +1,5 @@
 ﻿using GraphCollection;
+using GraphCollection.SearchAlgorithms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,35 @@ namespace GraphCollectionTest
             string adjacencyMatrix = graph.GetAdjacencyMatrix();
 
             Assert.AreEqual(" ||1|2|3|4|5\r\n==============\r\n1||1|1|1|0|0\r\n2||1|1|1|0|1\r\n3||1|1|1|1|0\r\n4||0|0|1|1|1\r\n5||0|1|0|1|1\r\n", adjacencyMatrix);
+        }
+        #endregion
+
+        #region LoadTaskGraph
+        [TestMethod]
+        public void LoadTaskGraph()
+        {
+            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "GRID.txt");
+            Graph<string> graph = GraphGenerator.LoadFromFile(path);
+
+            // Der Startknoten
+            Vertex<string> start = new Vertex<string>("1");
+
+            // die kürzesten Distanzen berechnen
+            graph = graph.Dijkstra(graph.GetVertex(new Vertex<string>("1")));
+
+            // Den Pfad zusammenstellen
+            Stack<Vertex<string>> dijkstraPath = new Stack<Vertex<string>>();
+            Vertex<string> actual = graph.GetVertex(new Vertex<string>("10000"));
+            while(actual != start)
+            {
+                dijkstraPath.Push(actual);
+                actual = actual.DijkstraAncestor;
+            }
+
+            dijkstraPath.Push(start);
+
+            // Die Knoten auf dem Pfad in eine neue Datei schreiben.
+            File.AppendAllLines(@"C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Klausur\GRID_solution.txt", dijkstraPath.Select(v => v.Value));
         }
         #endregion
 

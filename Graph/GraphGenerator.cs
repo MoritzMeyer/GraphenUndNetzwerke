@@ -25,40 +25,45 @@ namespace GraphCollection
             // Die einzelnen Zeilen der Datei auslesen.
             IEnumerator<string> linesEnumerator = lines.GetEnumerator();
 
-            // Die Liste mit NodeCaptions
+            // Die erste Zeile enthält die Anzahl an Knoten im Graphen
             linesEnumerator.MoveNext();
-            string[] nodeCaptions = linesEnumerator.Current.Split(';');
+            string stringSize = linesEnumerator.Current;
 
-            // Die Liste mit Kanten.
-            List<string> stringEdges = new List<string>();
+            // Den Graphen erstellen
+            Graph<string> graph = new Graph<string>();
+
+            // Die Liste mit Kanten, Knoten und Kantengewichten auslesen.            
+            int lineNumber = 2;
             while (linesEnumerator.MoveNext())
             {
-                stringEdges.Add(linesEnumerator.Current);
-            }
-
-            // Den Graphen erstellen und die Nodes setzen.
-            Graph<string> graph = new Graph<string>(nodeCaptions, isDirected);
-
-            // Die Kanten erstellen.
-            foreach (string stringEdge in stringEdges)
-            {
-                string[] vertices = stringEdge.Split(';');
-                if (vertices.Count() != 2 ||
-                    !graph.HasVertexWithValue(vertices[0]) ||
-                    !graph.HasVertexWithValue(vertices[1]))
+                string[] edgeData = linesEnumerator.Current.Split(' ');
+                if (edgeData.Count() != 3)
                 {
-                    throw new FormatException("Die Kanten müssen in der Form: 'V1;V2' angegeben werden. Wobei diese Kante von V1 nach V2 geht, sollte es sich um einen gerichteten Graphen handeln. V1 und V2 stellen die Werte der Vertices dar, welche in der ersten Zeile enthalten sein müssen. Es darf immer exakt eine Kante pro Zeile angegeben werden.");
+                    throw new ArgumentException($"Die Anzahl an Argumenten für die Kante in Zeile {lineNumber} genügt nicht den Anforderungen.");
                 }
 
-                if (!graph.AddEdge(vertices[0], vertices[1]))
+                // Wenn der ausgehende Knoten nicht vorhanden ist, diesen hinzufügen.
+                if (!graph.HasVertexWithValue(edgeData[0]))
+                {
+                    graph.AddVertex(edgeData[0]);
+                }
+
+                // Wenn der eingehende Knoten nicht vorhanden ist, diesen hinzufügen.
+                if (!graph.HasVertexWithValue(edgeData[2]))
+                {
+                    graph.AddVertex(edgeData[2]);
+                }
+
+                if (!graph.AddEdge(edgeData[0], edgeData[2], weight: Convert.ToInt32(edgeData[1])))
                 {
                     throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
                 }
+
+                lineNumber++;
             }
 
             // Den Graphen liefern.
             return graph;
-
         }
         #endregion
 
