@@ -51,6 +51,9 @@ namespace GraphCollectionTest
             // die kürzesten Distanzen berechnen
             graph = graph.Dijkstra(graph.GetVertex(new Vertex<string>("1")));
 
+            // den Prim algrotihmus anwenden
+            //Graph<string> minimalSpanningTree = graph.Prim();
+
             // Den Pfad zusammenstellen
             Stack<Vertex<string>> dijkstraPath = new Stack<Vertex<string>>();
             Vertex<string> actual = graph.GetVertex(new Vertex<string>("996"));
