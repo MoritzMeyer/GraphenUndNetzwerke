@@ -31,18 +31,10 @@ namespace GraphCollectionTest
 
         #region LoadTaskGraph
         [TestMethod]
+        //[Ignore]
         public void LoadTaskGraph()
         {
-            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "SPIDER.txt");
-            string solutionPath = @"C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Klausur\SPIDER_solution.txt";
-
-            // Sollte eine Datei mit einer Lösung bereits existieren, diese löschen
-            if (File.Exists(solutionPath))
-            {
-                File.Delete(solutionPath);
-            }
-
-            // Den Pfad aus der Datei laden.
+            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "GRID.txt");
             Graph<string> graph = GraphGenerator.LoadFromFile(path);
 
             // Der Startknoten
@@ -53,8 +45,8 @@ namespace GraphCollectionTest
 
             // Den Pfad zusammenstellen
             Stack<Vertex<string>> dijkstraPath = new Stack<Vertex<string>>();
-            Vertex<string> actual = graph.GetVertex(new Vertex<string>("996"));
-            while(!actual.Equals(start))
+            Vertex<string> actual = graph.GetVertex(new Vertex<string>("10000"));
+            while(actual != start)
             {
                 dijkstraPath.Push(actual);
                 actual = actual.DijkstraAncestor;
@@ -62,9 +54,8 @@ namespace GraphCollectionTest
 
             dijkstraPath.Push(start);
 
-
             // Die Knoten auf dem Pfad in eine neue Datei schreiben.
-            File.AppendAllLines(@"C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Klausur\SPIDER_solution.txt", dijkstraPath.Select(v => v.Value));
+            File.AppendAllLines(@"C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Klausur\GRID_solution.txt", dijkstraPath.Select(v => v.Value));
         }
         #endregion
 
