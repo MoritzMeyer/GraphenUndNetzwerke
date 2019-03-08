@@ -13,7 +13,7 @@ namespace GraphCollection
         /// </summary>
         /// <param name="path">Der Pfad zur Datei.</param>
         /// <returns>Den Graphen.</returns>
-        public static Graph<string> LoadFromFile(string path, bool isDirected = false)
+        public static Graph<string> LoadFromFile(string path, bool isDirected = false, bool isWeighted = false)
         {
             // Die Daten aus der Datei laden.
             IEnumerable<string> lines = File.ReadLines(path);
@@ -30,33 +30,45 @@ namespace GraphCollection
             string stringSize = linesEnumerator.Current;
 
             // Den Graphen erstellen
-            Graph<string> graph = new Graph<string>();
+            Graph<string> graph = new Graph<string>(isDirected: isDirected);
 
             // Die Liste mit Kanten, Knoten und Kantengewichten auslesen.            
             int lineNumber = 2;
             while (linesEnumerator.MoveNext())
             {
                 string[] edgeData = linesEnumerator.Current.Split(' ');
-                if (edgeData.Count() != 3)
+                if ((isWeighted && edgeData.Count() != 3) ||
+                    (!isWeighted && edgeData.Count() != 2))
                 {
                     throw new ArgumentException($"Die Anzahl an Argumenten für die Kante in Zeile {lineNumber} genügt nicht den Anforderungen.");
                 }
 
                 // Wenn der ausgehende Knoten nicht vorhanden ist, diesen hinzufügen.
-                if (!graph.HasVertexWithValue(edgeData[0]))
+                if (!graph.HasVertexWithValue(edgeData.First()))
                 {
-                    graph.AddVertex(edgeData[0]);
+                    graph.AddVertex(edgeData.First());
                 }
 
                 // Wenn der eingehende Knoten nicht vorhanden ist, diesen hinzufügen.
-                if (!graph.HasVertexWithValue(edgeData[2]))
+                if (!graph.HasVertexWithValue(edgeData.Last()))
                 {
-                    graph.AddVertex(edgeData[2]);
+                    graph.AddVertex(edgeData.Last());
                 }
 
-                if (!graph.AddEdge(edgeData[0], edgeData[2], weight: Convert.ToInt32(edgeData[1])))
+                // Die Kante dem Graphen hinzufügen.
+                if (isWeighted)
                 {
-                    throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
+                    if (!graph.AddEdge(edgeData.First(), edgeData.Last(), weight: Convert.ToInt32(edgeData[1])))
+                    {
+                        throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
+                    }
+                }
+                else
+                {
+                    if(!graph.AddEdge(edgeData.First(), edgeData.Last()))
+                    {
+                        throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
+                    }
                 }
 
                 lineNumber++;

@@ -43,7 +43,7 @@ namespace GraphCollectionTest
             }
 
             // Den Pfad aus der Datei laden.
-            Graph<string> graph = GraphGenerator.LoadFromFile(path);
+            Graph<string> graph = GraphGenerator.LoadFromFile(path, isWeighted: true);
 
             // Der Startknoten
             Vertex<string> start = new Vertex<string>("1");
