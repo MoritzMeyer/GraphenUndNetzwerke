@@ -1,0 +1,11 @@
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\GraphApplication.deps.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\GraphApplication.runtimeconfig.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\GraphApplication.runtimeconfig.dev.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\GraphApplication.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\GraphApplication.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\GraphApplication.csprojAssemblyReference.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\GraphApplication.csproj.CoreCompileInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\GraphApplication.AssemblyInfoInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\GraphApplication.AssemblyInfo.cs
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\GraphApplication.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\GraphApplication.pdb

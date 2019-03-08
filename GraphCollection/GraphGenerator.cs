@@ -15,6 +15,8 @@ namespace GraphCollection
         /// <returns>Den Graphen.</returns>
         public static Graph<string> LoadFromFile(string path, bool isDirected = false)
         {
+            //char[] invalid = System.IO.Path.GetInvalidPathChars();
+
             // Die Daten aus der Datei laden.
             IEnumerable<string> lines = File.ReadLines(path);
             if (lines.Count() < 1)
