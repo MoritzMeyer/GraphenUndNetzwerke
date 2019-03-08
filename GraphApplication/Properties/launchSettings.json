@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GraphApplication": {
+      "commandName": "Project",
+      "commandLineArgs": "test.txt dijkstra 1 996"
+    }
+  }
+}

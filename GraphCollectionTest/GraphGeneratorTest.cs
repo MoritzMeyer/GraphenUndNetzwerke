@@ -43,13 +43,13 @@ namespace GraphCollectionTest
             }
 
             // Den Pfad aus der Datei laden.
-            Graph<string> graph = GraphGenerator.LoadFromFile(path, isWeighted: true);
+            Graph<string> graph = GraphGenerator.LoadFromFile(path);
 
             // Der Startknoten
             Vertex<string> start = new Vertex<string>("1");
 
             // die kürzesten Distanzen berechnen
-            graph = graph.Dijkstra(graph.GetVertex(new Vertex<string>("1")));
+            graph = graph.Dijkstra(start);
 
             // den Prim algrotihmus anwenden
             //Graph<string> minimalSpanningTree = graph.Prim();

@@ -13,7 +13,7 @@ namespace GraphCollection
         /// </summary>
         /// <param name="path">Der Pfad zur Datei.</param>
         /// <returns>Den Graphen.</returns>
-        public static Graph<string> LoadFromFile(string path, bool isDirected = false, bool isWeighted = false)
+        public static Graph<string> LoadFromFile(string path, bool isDirected = false)
         {
             // Die Daten aus der Datei laden.
             IEnumerable<string> lines = File.ReadLines(path);
@@ -22,12 +22,54 @@ namespace GraphCollection
                 throw new InvalidDataException("The given File is empty");
             }
 
+            // Variablen initialisieren
+            bool isFlowGraph = false;
+            bool isWeighted = false;
+            int numberOfVertices = 0;
+            Vertex<string> sSource = default(Vertex<string>);
+            Vertex<string> tSink = default(Vertex<string>);
+
             // Die einzelnen Zeilen der Datei auslesen.
             IEnumerator<string> linesEnumerator = lines.GetEnumerator();
 
             // Die erste Zeile enthält die Anzahl an Knoten im Graphen
             linesEnumerator.MoveNext();
-            string stringSize = linesEnumerator.Current;
+
+            // Handelt es sich um einen Flussgraphen sind in der ersten Zeile neben der Anzahl auch die Quelle und die Senke angegeben
+            string[] lineData = linesEnumerator.Current.Split(' ');
+            switch(lineData.Count())
+            {
+                case 3:
+                    isFlowGraph = true;
+                    numberOfVertices = Convert.ToInt32(lineData[0]);
+                    sSource = new Vertex<string>(lineData[1]);
+                    tSink = new Vertex<string>(lineData[2]);
+                    break;
+                case 1:
+                    numberOfVertices = Convert.ToInt32(lineData[0]);
+                    break;
+                default:
+                    throw new ArgumentException("Unkown input Format in line 1");
+            }
+
+            // Die Anzahl an Einträgen in der zweiten Zeile bestimmt, ob es sich um einen un/gewichteten oder Flussgraphen handelt.
+            linesEnumerator.MoveNext();
+            lineData = linesEnumerator.Current.Split(' ');
+            
+            // Flussgraphen Anforderung überprüfen
+            if (isFlowGraph && lineData.Count() != 4)
+            {
+                throw new ArgumentException("Line 1 indicates a Flow-Graph, but line 2 number of arguments doesn't match the requirements for Flow-Graphs (must be 4)");
+            }
+
+            if (lineData.Count() == 3)
+            {
+                isWeighted = true;
+            }
+
+            // Den Enumerator wieder auf die erste Zeile setzen
+            linesEnumerator = lines.GetEnumerator();
+            linesEnumerator.MoveNext();
 
             // Den Graphen erstellen
             Graph<string> graph = new Graph<string>(isDirected: isDirected);
@@ -37,10 +79,11 @@ namespace GraphCollection
             while (linesEnumerator.MoveNext())
             {
                 string[] edgeData = linesEnumerator.Current.Split(' ');
-                if ((isWeighted && edgeData.Count() != 3) ||
-                    (!isWeighted && edgeData.Count() != 2))
+                if ((isFlowGraph && edgeData.Count() != 4) ||
+                     edgeData.Count() > 3 ||
+                     edgeData.Count() < 2)
                 {
-                    throw new ArgumentException($"Die Anzahl an Argumenten für die Kante in Zeile {lineNumber} genügt nicht den Anforderungen.");
+                    throw new ArgumentException($"Number of Arguments in line {lineNumber} doesn't macht the requirements");
                 }
 
                 // Wenn der ausgehende Knoten nicht vorhanden ist, diesen hinzufügen.

@@ -77,7 +77,7 @@
     <Content Include="TestFiles\TestGraph.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Graph\GraphCollection.csproj">
+    <ProjectReference Include="..\GraphCollection\GraphCollection.csproj">
       <Project>{A2ED1084-1D4B-4A8E-A48C-E5C6FE39126B}</Project>
       <Name>GraphCollection</Name>
     </ProjectReference>

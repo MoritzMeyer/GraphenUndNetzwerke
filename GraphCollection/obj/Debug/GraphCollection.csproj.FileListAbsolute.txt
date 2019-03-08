@@ -22,3 +22,9 @@ C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\Graphe
 C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.csproj.CoreCompileInputs.cache
 C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.dll
 C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\Graph\obj\Debug\GraphCollection.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphCollection\bin\Debug\GraphCollection.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphCollection\bin\Debug\GraphCollection.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphCollection\obj\Debug\GraphCollection.csprojAssemblyReference.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphCollection\obj\Debug\GraphCollection.csproj.CoreCompileInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphCollection\obj\Debug\GraphCollection.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphCollection\obj\Debug\GraphCollection.pdb
