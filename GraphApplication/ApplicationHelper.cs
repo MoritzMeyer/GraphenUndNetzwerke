@@ -39,19 +39,9 @@ namespace GraphApplication
             // Den letzten Knoten (start) noch pushen
             dijkstraPath.Push(start);
 
-            // Die Anzahl an bereits vorhandenen Ergebnissen des DijkstraAlgorithmus ermitteln
+            // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            int resultFileCount = Directory.GetFiles(
-                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), 
-                    "dijkstraResult_" + baseFileName + "[*].txt", SearchOption.TopDirectoryOnly)
-                .Length;
-
-            // Den Pfad für die Ergebnisdatei zusammenstellen.
-            string resultFilePath = Path.Combine(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), 
-                "dijkstraResult_" + baseFileName + "[" + resultFileCount + "].txt");
-
-            File.AppendAllLines(resultFilePath, dijkstraPath.Select(v => v.Value));
+            ApplicationHelper.WriteResult(baseFileName, "dijkstraResult_", dijkstraPath.Select(v => v.Value));
         }
         #endregion
 
@@ -72,25 +62,9 @@ namespace GraphApplication
             // Prim ausführen.
             Graph<string> result = (start != null) ? graph.Prim(start) : graph.Prim();
 
-            // Die Anzahl an bereits vorhandenen Ergebnissen des DijkstraAlgorithmus ermitteln
+            // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            int resultFileCount = Directory.GetFiles(
-                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                    "primResult_" + baseFileName + "[*].txt", SearchOption.TopDirectoryOnly)
-                .Length;
-
-            // Den Pfad für die Ergebnisdatei zusammenstellen.
-            string resultFilePath = Path.Combine(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                "primResult_" + baseFileName + "[" + resultFileCount + "].txt");
-
-            /*string resultFilePathAdjecent = Path.Combine(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                "primAdjacent_" + baseFileName + "[" + resultFileCount + "].txt");*/
-
-            File.AppendAllLines(resultFilePath, result.Edges.Select((edge) => edge.ToString()));
-            //File.AppendAllText(resultFilePathAdjecent, result.GetAdjacencyMatrix());
-
+            ApplicationHelper.WriteResult(baseFileName, "primResult_", result.Edges.Select((edge) => edge.ToString()));
         }
         #endregion
 
@@ -105,27 +79,30 @@ namespace GraphApplication
             Graph<string> graph = ApplicationHelper.LoadGraph(fileName);
 
             // Kruskal ausführen.
-            //Graph<string> result = graph.Kruskal();
             Graph<string> result = graph.KruskalDisjointSet();
 
-            // Die Anzahl an bereits vorhandenen Ergebnissen des DijkstraAlgorithmus ermitteln
+            // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            int resultFileCount = Directory.GetFiles(
-                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                    "kurskalResult_" + baseFileName + "[*].txt", SearchOption.TopDirectoryOnly)
-                .Length;
+            ApplicationHelper.WriteResult(baseFileName, "kruskalResult_", result.Edges.Select((edge) => edge.ToString()));
+        }
+        #endregion
 
-            // Den Pfad für die Ergebnisdatei zusammenstellen.
-            string resultFilePath = Path.Combine(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                "kurskalResult_" + baseFileName + "[" + resultFileCount + "].txt");
+        #region CallFordFulkerson
+        /// <summary>
+        /// Lädt den Graphen aus der gegebenen Datei und führt auf diesem den FordFulkerson Algorithmus aus.
+        /// <paramref name="fileName">Der Name der Datei welche den Graphen enthält.</paramref>
+        /// </summary>
+        public static void CallFordFulkerson(string fileName)
+        {
+            // Den Graphen aus der Datei laden.
+            FlowGraph<string> graph = (FlowGraph<string>)ApplicationHelper.LoadGraph(fileName);
 
-            /*string resultFilePathAdjecent = Path.Combine(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                "kurskalAdjacent_" + baseFileName + "[" + resultFileCount + "].txt");*/
+            // Ford-Fulkerson ausführen.
+            FlowGraph<string> result = graph.FordFulkerson();
 
-            File.AppendAllLines(resultFilePath, result.Edges.Select((edge) => edge.ToString()));
-            //File.AppendAllText(resultFilePathAdjecent, result.GetAdjacencyMatrix());
+            // Das Ergebnis in eine Datei schreiben.
+            string baseFileName = fileName.Split('.')[0];
+            ApplicationHelper.WriteResult(baseFileName, "fordfulkersonResult_", result.Edges.Select((edge) => edge.ToString()));
         }
         #endregion
 
@@ -141,6 +118,30 @@ namespace GraphApplication
             string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), fileName);
             Graph<string> graph = GraphGenerator.LoadFromFile(filePath);
             return graph;
+        }
+        #endregion
+
+        #region WriteResult
+        /// <summary>
+        /// Schreibt ein IEnumerable (Ergebnis) in eine angegebenen Datei.
+        /// </summary>
+        /// <param name="fileName">Der Name der Ursprungsdatei.</param>
+        /// <param name="filePrefix">Der Name der zu schreibenden Datei.</param>
+        /// <param name="content">Der Inhalt.</param>
+        private static void WriteResult(string baseFileName, string filePrefix, IEnumerable<string> content)
+        {
+            // Die Anzahl an bereits vorhandenen Ergebnissen des prefixes ermitteln
+            int resultFileCount = Directory.GetFiles(
+                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                    filePrefix + baseFileName + "[*].txt", SearchOption.TopDirectoryOnly)
+                .Length;
+
+            // Den Pfad für die Ergebnisdatei zusammenstellen.
+            string resultFilePath = Path.Combine(
+                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                filePrefix + baseFileName + "[" + resultFileCount + "].txt");
+        
+            File.AppendAllLines(resultFilePath, content);
         }
         #endregion
     }

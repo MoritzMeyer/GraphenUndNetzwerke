@@ -71,6 +71,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\FlowGraph.txt" />
     <Content Include="TestFiles\GRID.txt" />
     <Content Include="TestFiles\LADDER.txt" />
     <Content Include="TestFiles\SPIDER.txt" />

@@ -103,6 +103,16 @@ namespace GraphApplication
 
                     ApplicationHelper.CallKruskal(args[0]);
                     break;
+                case "ford-fulkerson":
+                    if (args.Count() > 2)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                    }
+
+                    ApplicationHelper.CallFordFulkerson(args[0]);
+                    break;
                 default:
                     Console.WriteLine("");
                     Console.WriteLine($"No matching funciton found for '{args[1]}'");
@@ -118,8 +128,8 @@ namespace GraphApplication
         private static void WriteUsageInfo()
         {
             Console.WriteLine("");
-            Console.WriteLine("Usage: GraphApplication [filename] [functionname] [function-parameter]");
-            Console.WriteLine("Usage: GraphApplication [options]");
+            Console.WriteLine("Usage: graphsuitemm [filename] [functionname] [function-parameter]");
+            Console.WriteLine("Usage: graphsuitemm [options]");
             Console.WriteLine("");
             Console.WriteLine("filename");
             Console.WriteLine("\t The filename of the file which contains graph data. This must reside in the applications folder.");

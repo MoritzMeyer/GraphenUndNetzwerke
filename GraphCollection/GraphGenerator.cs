@@ -74,7 +74,7 @@ namespace GraphCollection
             linesEnumerator.MoveNext();
 
             // Den Graphen erstellen
-            Graph<string> graph = new Graph<string>(isDirected: isDirected);
+            Graph<string> graph = (isFlowGraph) ? new FlowGraph<string>(sSource, tSink, new List<Vertex<string>>() { sSource, tSink }) : new Graph<string>(isDirected: isDirected);
 
             // Die Liste mit Kanten, Knoten und Kantengewichten auslesen.            
             int lineNumber = 2;
@@ -82,8 +82,8 @@ namespace GraphCollection
             {
                 string[] edgeData = linesEnumerator.Current.Split(' ');
                 if ((isFlowGraph && edgeData.Count() != 4) ||
-                     edgeData.Count() > 3 ||
-                     edgeData.Count() < 2)
+                     (!isFlowGraph && edgeData.Count() > 3) ||
+                     (!isFlowGraph && edgeData.Count() < 2))
                 {
                     throw new ArgumentException($"Number of Arguments in line {lineNumber} doesn't macht the requirements");
                 }
@@ -104,6 +104,13 @@ namespace GraphCollection
                 if (isWeighted)
                 {
                     if (!graph.AddEdge(edgeData.First(), edgeData.Last(), weight: Convert.ToInt32(edgeData[1])))
+                    {
+                        throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
+                    }
+                }
+                else if (isFlowGraph)
+                {
+                    if (!((FlowGraph<string>)graph).AddEdge(edgeData.First(), edgeData.Last(), Convert.ToInt32(edgeData[1]), Convert.ToInt32(edgeData[2])))
                     {
                         throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
                     }

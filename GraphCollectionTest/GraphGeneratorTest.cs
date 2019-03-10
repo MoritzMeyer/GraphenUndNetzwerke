@@ -29,6 +29,58 @@ namespace GraphCollectionTest
         }
         #endregion
 
+        #region LoadFlowGraph_must_work
+        /// <summary>
+        /// Testet das Laden eines Flowgraphens.
+        /// </summary>
+        [TestMethod]
+        public void LoadFlowGraph_must_work()
+        {
+            string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "TestFiles", "FlowGraph.txt");
+
+            FlowGraph<string> graph = (FlowGraph<string>)GraphGenerator.LoadFromFile(path);
+
+            // Die Vertices prüfen
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("s"), new Vertex<string>("a")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("s"), new Vertex<string>("b")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("a"), new Vertex<string>("b")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("a"), new Vertex<string>("c")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("b"), new Vertex<string>("c")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("b"), new Vertex<string>("d")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("c"), new Vertex<string>("d")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("c"), new Vertex<string>("t")));
+            Assert.IsTrue(graph.HasEdge(new Vertex<string>("d"), new Vertex<string>("t")));
+
+            // Die Kapzitäten und Flüsse prüfen.
+            Assert.AreEqual(5, graph.GetEdge(new Vertex<string>("s"), new Vertex<string>("a")).Capacity);
+            Assert.AreEqual(5, graph.GetEdge(new Vertex<string>("s"), new Vertex<string>("a")).Flow);
+
+            Assert.AreEqual(7, graph.GetEdge(new Vertex<string>("s"), new Vertex<string>("b")).Capacity);
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("s"), new Vertex<string>("b")).Flow);
+
+            Assert.AreEqual(7, graph.GetEdge(new Vertex<string>("a"), new Vertex<string>("b")).Capacity);
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("a"), new Vertex<string>("b")).Flow);
+
+            Assert.AreEqual(4, graph.GetEdge(new Vertex<string>("a"), new Vertex<string>("c")).Capacity);
+            Assert.AreEqual(2, graph.GetEdge(new Vertex<string>("a"), new Vertex<string>("c")).Flow);
+
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("b"), new Vertex<string>("c")).Capacity);
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("b"), new Vertex<string>("c")).Flow);
+
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("b"), new Vertex<string>("d")).Capacity);
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("b"), new Vertex<string>("d")).Flow);
+
+            Assert.AreEqual(4, graph.GetEdge(new Vertex<string>("c"), new Vertex<string>("d")).Capacity);
+            Assert.AreEqual(0, graph.GetEdge(new Vertex<string>("c"), new Vertex<string>("d")).Flow);
+
+            Assert.AreEqual(5, graph.GetEdge(new Vertex<string>("c"), new Vertex<string>("t")).Capacity);
+            Assert.AreEqual(5, graph.GetEdge(new Vertex<string>("c"), new Vertex<string>("t")).Flow);
+
+            Assert.AreEqual(6, graph.GetEdge(new Vertex<string>("d"), new Vertex<string>("t")).Capacity);
+            Assert.AreEqual(3, graph.GetEdge(new Vertex<string>("d"), new Vertex<string>("t")).Flow);
+        }
+        #endregion
+
         #region LoadTaskGraph
         [TestMethod]
         public void LoadTaskGraph()

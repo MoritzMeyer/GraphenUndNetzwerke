@@ -167,6 +167,11 @@ namespace GraphCollection
                 connector = connector[0] + "[" + this.Weight.ToString() + "]" + connector[2];
             }
 
+            if (this.Flow != null && this.Capacity != null)
+            {
+                connector = connector[0] + "[" + this.Flow.ToString() + "/" + this.Capacity + "]" + connector[2];
+            }
+
             return this.From.ToString() + " " + connector + " " + this.To.ToString();
             //return $"{this.From.ToString()} {connector} {this.To.ToString()}";
         }
