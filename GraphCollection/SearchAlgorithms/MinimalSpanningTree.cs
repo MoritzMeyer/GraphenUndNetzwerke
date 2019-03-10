@@ -55,6 +55,55 @@ namespace GraphCollection.SearchAlgorithms
         }
         #endregion
 
+        public static Graph<T> KruskalDisjointSet<T>(this Graph<T> graph)
+        {
+            if (!graph.IsWeighted)
+            {
+                throw new InvalidOperationException("Der Algorithmus von Kruskal kann nur auf gewichteten Graphen durchgeführt werden.");
+            }
+
+            if (graph.IsDirected)
+            {
+                throw new InvalidOperationException("Der Algorithmus von Kruskal kann nur auf ungerichteten Graphen durchgeführt werden.");
+            }
+
+            // Den neuen Graphen, die working List und die Union-Find-Struktur initialisieren.
+            Graph<T> minimalSpanningTree = new Graph<T>(graph.Vertices);
+            List<Edge<T>> workingList = new List<Edge<T>>();
+
+            foreach (Edge<T> edge in graph.Edges)
+            {
+                workingList.Add(new Edge<T>(edge));
+            }
+
+            // Die Working-List nach Gewichten sortieren.
+            workingList = workingList.OrderBy(e => e.Weight).ToList();
+
+            // UnionFind initialisieren.
+            DisjointSet<T> unionFind = new DisjointSet<T>(graph.Vertices);
+
+            while (workingList.Count > 0)
+            {
+                Edge<T> actualEdge = workingList.First();
+                workingList.Remove(actualEdge);
+
+                if (unionFind.Find(actualEdge.From) != unionFind.Find(actualEdge.To))
+                {
+                    minimalSpanningTree.AddEdge(actualEdge.From, actualEdge.To, actualEdge.Weight);
+                    unionFind.Union(actualEdge.From, actualEdge.To);
+                }
+                
+                /*
+                if (minimalSpanningTree.HasCycle())
+                {
+                    minimalSpanningTree.RemoveEdge(actualEdge);
+                }
+                */
+            }
+
+            return minimalSpanningTree;
+        }
+
         #region Prim
         /// <summary>
         /// Der Prim-Algorithmus für minimale Spannbäume

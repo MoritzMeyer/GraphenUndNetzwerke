@@ -105,7 +105,8 @@ namespace GraphApplication
             Graph<string> graph = ApplicationHelper.LoadGraph(fileName);
 
             // Kruskal ausführen.
-            Graph<string> result = graph.Kruskal();
+            //Graph<string> result = graph.Kruskal();
+            Graph<string> result = graph.KruskalDisjointSet();
 
             // Die Anzahl an bereits vorhandenen Ergebnissen des DijkstraAlgorithmus ermitteln
             string baseFileName = fileName.Split('.')[0];

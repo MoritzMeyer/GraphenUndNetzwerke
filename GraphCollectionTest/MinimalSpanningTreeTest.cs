@@ -38,7 +38,7 @@ namespace GraphCollectionTest
             graph.AddEdge(vD, vF, 6);
             graph.AddEdge(vF, vG, 11);
 
-            Graph<string> minimalSpanningTree = graph.Kruskal();
+            Graph<string> minimalSpanningTree = graph.KruskalDisjointSet();
             Assert.IsTrue(minimalSpanningTree.HasEdge(vA, vD));
             Assert.IsTrue(minimalSpanningTree.HasEdge(vA, vB));
             Assert.IsTrue(minimalSpanningTree.HasEdge(vC, vE));
@@ -48,6 +48,7 @@ namespace GraphCollectionTest
         }
         #endregion
 
+        #region Prim_must_work
         /// <summary>
         /// Implementiert den Prim Algorithmus für minimale Spannbäume
         /// </summary>
@@ -85,5 +86,6 @@ namespace GraphCollectionTest
             Assert.IsTrue(minimalSpanningTree.HasEdge(vE, vG));
 
         }
+        #endregion
     }
 }
