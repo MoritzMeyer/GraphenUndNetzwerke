@@ -164,10 +164,11 @@ namespace GraphCollection
 
             if (this.Weight != null)
             {
-                connector = connector[0] + this.Weight.ToString() + connector[2];
+                connector = connector[0] + "[" + this.Weight.ToString() + "]" + connector[2];
             }
 
-            return $"{this.From.ToString()} {connector} {this.To.ToString()}";
+            return this.From.ToString() + " " + connector + " " + this.To.ToString();
+            //return $"{this.From.ToString()} {connector} {this.To.ToString()}";
         }
         #endregion
     }

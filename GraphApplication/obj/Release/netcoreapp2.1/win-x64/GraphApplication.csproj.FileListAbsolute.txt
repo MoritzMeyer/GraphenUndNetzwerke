@@ -12,3 +12,6 @@ C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\Graphe
 C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x64\GraphApplication.AssemblyInfo.cs
 C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x64\GraphApplication.dll
 C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x64\GraphApplication.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x64\GraphCollection.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x64\GraphCollection.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x64\GraphApplication.csproj.CopyComplete

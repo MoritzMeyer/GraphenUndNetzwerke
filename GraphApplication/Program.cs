@@ -8,20 +8,45 @@ namespace GraphApplication
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase));
-            //Console.ReadKey();
+            // remove parameter '-'
+            foreach (string arg in args)
+            {
+                if (arg[0].Equals('-'))
+                {
+                    args[0] = arg.Remove(0, 1);
+                }
+            }
 
             // Die Input Parameter prüfen.
             switch (args.Count())
             {
                 case 0:
+                    Program.WriteUsageInfo();
+                    break;
                 case 1:
-                    throw new ArgumentException("Not enough Arguments given.");
+                    if (args[0].ToLower().Equals("help") || args[0].ToLower().Equals("h"))
+                    {
+                        Program.WriteUsageInfo();
+                    }
+                    else if (args[0].ToLower().Equals("info"))
+                    {
+                        WriteInfo();
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Unknown Paramter");
+                        Console.WriteLine("");
+                        Program.WriteUsageInfo();
+                    }
+                    break;
+                    //throw new ArgumentException("Not enough Arguments given.");
                 case 2:
-                    string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase), args[0]);
+                    string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), args[0]);
                     if (!File.Exists(filePath))
                     {
-                        throw new ArgumentException("File doesn't exists.");
+                        Console.WriteLine("File with given filename could not be found in application folder.");
+                        //throw new ArgumentException("File doesn't exists.");
                     }
                     break;
             }
@@ -32,7 +57,10 @@ namespace GraphApplication
                 case "dijkstra":
                     if (args.Count() < 3 || args.Count() > 4)
                     {
-                        throw new ArgumentException("Not enough Arguments for this function.");
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                        //throw new ArgumentException("Not enough Arguments for this function.");
                     }
 
                     if (args.Count() == 3)
@@ -46,16 +74,74 @@ namespace GraphApplication
                     
                     break;
                 case "prim":
+                    if (args.Count() > 3)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                        //throw new ArgumentException("To much parameters for this function");
+                    }
+
+                    if (args.Count() == 2)
+                    {
+                        ApplicationHelper.CallPrim(args[0]);
+                    }
+                    else
+                    {
+                        ApplicationHelper.CallPrim(args[0], args[2]);
+                    }
+
+                    break;
+                case "kruskal":
+                    if (args.Count() > 2)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                        //throw new ArgumentException("To much parameters for this function");
+                    }
+
+                    ApplicationHelper.CallKruskal(args[0]);
                     break;
                 default:
-                    throw new ArgumentException($"No matching function found for '{args[1]}'");
+                    Console.WriteLine("");
+                    Console.WriteLine($"No matching funciton found for '{args[1]}'");
+                    break;
+                    //throw new ArgumentException($"No matching function found for '{args[1]}'");
             }
 
             
 
-            Console.WriteLine(args.Select((arg) => arg.ToString()).Aggregate((a, b) => a + ", " + b));
+            //Console.WriteLine(args.Select((arg) => arg.ToString()).Aggregate((a, b) => a + ", " + b));
         }
 
-        
+        private static void WriteUsageInfo()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Usage: GraphApplication [filename] [functionname] [function-parameter]");
+            Console.WriteLine("Usage: GraphApplication [options]");
+            Console.WriteLine("");
+            Console.WriteLine("filename");
+            Console.WriteLine("\t The filename of the file which contains graph data. This must reside in the applications folder.");
+            Console.WriteLine("");
+            Console.WriteLine("functionname");
+            Console.WriteLine("\t Name of the function to execute on the graph data. Possible functions are:");
+            Console.WriteLine("\t  - dijkstra \t fuction-parameter:  [start vertex] [target vertex (optional)]");
+            Console.WriteLine("\t  - prim \t function-parameter: [start vertex (optional)]");
+            Console.WriteLine("\t  - kruskal \t (no parameters)");
+            Console.WriteLine("");
+            Console.WriteLine("options:");
+            Console.WriteLine(" -h|-help \t Display this dialog.");
+            Console.WriteLine(" -info    \t Display graphsuite information");
+
+            Environment.Exit(0);
+        }
+
+        private static void WriteInfo()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Graphsuite developed in the context of the lecture 'Graphen und Netwerke' at Hochschule Fulda University of Applied Science by Moritz Meyer.");
+            Environment.Exit(0);
+        }
     }
 }

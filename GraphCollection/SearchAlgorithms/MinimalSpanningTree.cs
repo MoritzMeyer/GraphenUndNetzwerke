@@ -61,8 +61,9 @@ namespace GraphCollection.SearchAlgorithms
         /// </summary>
         /// <typeparam name="T">Der Datentyp des Graphen.</typeparam>
         /// <param name="graph">Der Graph.</param>
+        /// <param name="start">Wenn angegeben, wird der min. spanningtree ausgehend von diesem Knoten generiert.</param>
         /// <returns>Der minimale Spannbaum.</returns>
-        public static Graph<T> Prim<T>(this Graph<T> graph)
+        public static Graph<T> Prim<T>(this Graph<T> graph, Vertex<T> start = null)
         {
             if (!graph.IsWeighted)
             {
@@ -74,9 +75,8 @@ namespace GraphCollection.SearchAlgorithms
                 throw new InvalidOperationException("Der Algorithmus von Kruskal kann nur auf ungerichteten Graphen durchgeführt werden.");
             }
 
-            // Den minimalen Spannbaum mit einem beliebigen Knoten initialisieren
+            // Den minimalen Spannbaum und die Workingliste initialisieren
             Graph<T> minimalSpanningTree = new Graph<T>();
-
             List<Vertex<T>> workingList = new List<Vertex<T>>();
             foreach (Vertex<T> vertex in graph.Vertices)
             {
@@ -84,7 +84,18 @@ namespace GraphCollection.SearchAlgorithms
                 workingList.Add(vertex);
             }
 
-            workingList.First().SortOrder = 0;
+            // Den Startknoten auswählen.
+            if (start != null)
+            {
+                start = graph.GetVertex(start);
+                workingList[workingList.IndexOf(start)].SortOrder = 0;
+            }
+            else
+            {
+                workingList.First().SortOrder = 0;
+            }
+
+            // Die Liste initial sortieren.
             workingList = workingList.OrderBy(v => v.SortOrder).ToList();
 
             while (workingList.Count > 0)

@@ -9,7 +9,8 @@
     ".NETCoreApp,Version=v2.1/win-x64": {
       "GraphApplication/1.0.0": {
         "dependencies": {
-          "Microsoft.NETCore.App": "2.1.7"
+          "Microsoft.NETCore.App": "2.1.7",
+          "GraphCollection": "1.0.0.0"
         },
         "runtime": {
           "GraphApplication.dll": {}
@@ -866,6 +867,14 @@
             "fileVersion": "2.1.27130.1"
           }
         }
+      },
+      "GraphCollection/1.0.0.0": {
+        "runtime": {
+          "GraphCollection.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -951,6 +960,11 @@
       "sha512": "sha512-JZv6f56LwTg+kspEyL87Ciy5IlWPqMTboTIryksWdlaxIOKf1wwtI2P21/Kutm3y0AACYINdi7ADZmh+7IKS0g==",
       "path": "runtime.win-x64.microsoft.netcore.dotnethostresolver/2.1.7",
       "hashPath": "runtime.win-x64.microsoft.netcore.dotnethostresolver.2.1.7.nupkg.sha512"
+    },
+    "GraphCollection/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
