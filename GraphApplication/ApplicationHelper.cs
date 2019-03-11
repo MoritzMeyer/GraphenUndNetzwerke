@@ -1,11 +1,15 @@
 ﻿using GraphCollection;
 using GraphCollection.SearchAlgorithms;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace GraphApplication
 {
+    /// <summary>
+    /// Helfer Klasse für die Konsolen-Anwendung.
+    /// </summary>
     public static class ApplicationHelper
     {
         #region CallDijkstra
@@ -106,17 +110,96 @@ namespace GraphApplication
         }
         #endregion
 
+        #region CallStrongConnect
+        /// <summary>
+        /// Lädt einen Graphen aus der angegebenen Datei und berechnet für diesen die strongly connected components
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static void CallStrongConnect(string fileName)
+        {
+            Graph<string> graph = ApplicationHelper.LoadGraph(fileName, true);
+
+            List<List<Vertex<string>>> components = StronglyConnectedComponents<string>.Search(graph);
+
+            // Das Ergebnis in eine Datei schreiben.
+            string baseFileName = fileName.Split('.')[0];
+            ApplicationHelper.WriteResult(
+                baseFileName, 
+                "strongConnectResult_", 
+                components.Select(
+                    (list) => "Component " + components.IndexOf(list) + ":" + Environment.NewLine + list.Select((edge) => edge.ToString()).Aggregate((a, b) => a + Environment.NewLine + b)))
+;
+        }
+        #endregion
+
+        #region CallTopSort
+        /// <summary>
+        /// Lädt einen Graphen aus der angegebenen Datei und führt auf diesem den TopSort-Algorithmus aus.
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static void CallTopSort(string fileName)
+        {
+            // Den Graphen aus der Datei laden.
+            Graph<string> graph = ApplicationHelper.LoadGraph(fileName, true);
+
+            // TopSort ausführen.
+            SortedList<int, Vertex<string>> tSort = graph.TopSort();
+
+            // Das Ergebnis in eine Datei schreiben.
+            string baseFileName = fileName.Split('.')[0];
+            ApplicationHelper.WriteResult(baseFileName, "topSortResult_", tSort.Select((kv) => kv.Value.ToString()))
+;
+        }
+        #endregion
+
+        #region CallAllPairsShortestPath
+        /// <summary>
+        /// Lädt einen Graphen aus der gegebenen Datei und führt auf diesem den AllPairsShortestPath-Algorithmus aus.
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static void CallAllPairsShortestPath(string fileName)
+        {
+            Graph<string> graph = ApplicationHelper.LoadGraph(fileName, true);
+
+            string result = graph.AllPairsShortestPath();
+
+            string baseFileName = fileName.Split('.')[0];
+            ApplicationHelper.WriteResult(baseFileName, "allPairsShortestPathResult_", new List<string>() { result });
+        }
+        #endregion
+
+        #region CallDepthFirstSearch
+        /// <summary>
+        /// Lädt den Graphen aus der Datei und führt auf diesem den Depth-First-Search Algrithmus aus.
+        /// </summary>
+        /// <param name="fileName">Die Datei, welche den Graphen enthält.</param>
+        /// <param name="start">Der Knoten von dem aus gesucht werden soll.</param>
+        /// <param name="target">Der gesuchte Knoten.</param>
+        public static void CallDepthFirstSearch(string fileName, string start, string target)
+        {
+            // Den Graphen aus der Datei laden.
+            Graph<string> graph = ApplicationHelper.LoadGraph(fileName);
+
+            // DFS ausführen
+            graph.DepthFirstSearch(new Vertex<string>(start), new Vertex<string>(target), out List<Edge<string>> dfsPath);
+
+            // Das Ergebnis in eine Datei schreiben.
+            string baseFileName = fileName.Split('.')[0];
+            ApplicationHelper.WriteResult(baseFileName, "dfsResult_", dfsPath.Select((edge) => edge.ToString()));
+        }
+        #endregion
+
         #region LoadGraph
         /// <summary>
         /// Lädt einen Graphen aus der gegebenen Datei.
         /// </summary>
         /// <param name="fileName"></param>
-        /// <returns></returns>
-        private static Graph<string> LoadGraph(string fileName)
+        /// <returns>Der Graph aus der Datei.</returns>
+        private static Graph<string> LoadGraph(string fileName, bool isDirected = false)
         {
             // Den Graphen aus der Datei laden.
             string filePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), fileName);
-            Graph<string> graph = GraphGenerator.LoadFromFile(filePath);
+            Graph<string> graph = GraphGenerator.LoadFromFile(filePath, isDirected);
             return graph;
         }
         #endregion

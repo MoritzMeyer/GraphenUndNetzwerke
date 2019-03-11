@@ -2,7 +2,7 @@
   "profiles": {
     "GraphApplication": {
       "commandName": "Project",
-      "commandLineArgs": "FlowGraph.txt ford-fulkerson"
+      "commandLineArgs": "TopSortGraph.txt tsort"
     }
   }
 }

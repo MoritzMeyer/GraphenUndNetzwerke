@@ -71,7 +71,7 @@ namespace GraphApplication
                     {
                         ApplicationHelper.CallDijkstra(args[0], args[2], args[3]);
                     }
-                    
+
                     break;
                 case "prim":
                     if (args.Count() > 3)
@@ -113,14 +113,53 @@ namespace GraphApplication
 
                     ApplicationHelper.CallFordFulkerson(args[0]);
                     break;
+                case "strong-connect":
+                    if (args.Count() > 2)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                    }
+
+                    ApplicationHelper.CallStrongConnect(args[0]);
+                    break;
+                case "tsort":
+                    if (args.Count() > 2)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                    }
+
+                    ApplicationHelper.CallTopSort(args[0]);
+                    break;
+                case "allpairs-shortestpath":
+                    if (args.Count() > 2)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                    }
+
+                    ApplicationHelper.CallAllPairsShortestPath(args[0]);
+                    break;
+                case "dfs":
+                case "depth-first-search":
+                    if (args.Count() != 4)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Number of Arguments doesn't match the function requirements");
+                        Program.WriteUsageInfo();
+                    }
+
+                    ApplicationHelper.CallDepthFirstSearch(args[0], args[2], args[3]);
+                    break;
                 default:
                     Console.WriteLine("");
                     Console.WriteLine($"No matching funciton found for '{args[1]}'");
                     break;
                     //throw new ArgumentException($"No matching function found for '{args[1]}'");
-            }
-
-            
+            }            
 
             //Console.WriteLine(args.Select((arg) => arg.ToString()).Aggregate((a, b) => a + ", " + b));
         }
@@ -135,10 +174,13 @@ namespace GraphApplication
             Console.WriteLine("\t The filename of the file which contains graph data. This must reside in the applications folder.");
             Console.WriteLine("");
             Console.WriteLine("functionname");
-            Console.WriteLine("\t Name of the function to execute on the graph data. Possible functions are:");
+            Console.WriteLine("\t Name of the function to execute on the given graph. Possible functions are:");
             Console.WriteLine("\t  - dijkstra \t fuction-parameter:  [start vertex] [target vertex (optional)]");
             Console.WriteLine("\t  - prim \t function-parameter: [start vertex (optional)]");
             Console.WriteLine("\t  - kruskal \t (no parameters)");
+            Console.WriteLine("\t  - ford-fulkerson \t (no parameters)");
+            Console.WriteLine("\t  - strong-connect \t (no parameters)");
+            Console.WriteLine("\t  - tsort \t (no parameters)");
             Console.WriteLine("");
             Console.WriteLine("options:");
             Console.WriteLine(" -h|-help \t Display this dialog.");

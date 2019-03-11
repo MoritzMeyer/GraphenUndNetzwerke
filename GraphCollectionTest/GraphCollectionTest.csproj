@@ -76,6 +76,8 @@
     <Content Include="TestFiles\LADDER.txt" />
     <Content Include="TestFiles\SPIDER.txt" />
     <Content Include="TestFiles\TestGraph.txt" />
+    <Content Include="TestFiles\TopSortGraph.txt" />
+    <Content Include="TestFiles\APSP-Graph.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphCollection\GraphCollection.csproj">

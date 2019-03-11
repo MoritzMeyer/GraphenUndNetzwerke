@@ -60,12 +60,12 @@ namespace GraphCollection.SearchAlgorithms
                 // Die Liste mit Kanten auf dem Pfad wird in falscher Reihenfolge befüllt, hier die richtige Reihenfolge herstellen.
                 path.Reverse();
 
-                Console.WriteLine("DepthFirstSearch was successful!: ");
-                Console.WriteLine(output);
+                // Console.WriteLine("DepthFirstSearch was successful!: ");
+                // Console.WriteLine(output);
             }
             else
             {
-                Console.WriteLine("DepthFirstSearch wasn't successful!");
+                // Console.WriteLine("DepthFirstSearch wasn't successful!");
             }
 
             return sucess;
