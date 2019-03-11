@@ -12,6 +12,10 @@ namespace GraphApplication
     /// </summary>
     public static class ApplicationHelper
     {
+        private static string resultFolderString = "results";
+
+        private static string resultFolder = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), ApplicationHelper.resultFolderString);
+
         #region CallDijkstra
         /// <summary>
         /// Lädt einen Graphen aus einer Datei und führt auf diesem den Dijkstra-Algorithmus mit den gegebenen Parametern aus.
@@ -213,16 +217,20 @@ namespace GraphApplication
         /// <param name="content">Der Inhalt.</param>
         private static void WriteResult(string baseFileName, string filePrefix, IEnumerable<string> content)
         {
+            Directory.CreateDirectory(ApplicationHelper.resultFolder);
+
             // Die Anzahl an bereits vorhandenen Ergebnissen des prefixes ermitteln
             int resultFileCount = Directory.GetFiles(
-                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                    filePrefix + baseFileName + "[*].txt", SearchOption.TopDirectoryOnly)
+                    ApplicationHelper.resultFolder,
+                    filePrefix + baseFileName + "*.txt", SearchOption.TopDirectoryOnly)
                 .Length;
+
+            string fcount = (resultFileCount > 0) ? resultFileCount.ToString() : "";
 
             // Den Pfad für die Ergebnisdatei zusammenstellen.
             string resultFilePath = Path.Combine(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                filePrefix + baseFileName + "[" + resultFileCount + "].txt");
+                ApplicationHelper.resultFolder,
+                filePrefix + baseFileName + fcount + ".txt");
         
             File.AppendAllLines(resultFilePath, content);
         }

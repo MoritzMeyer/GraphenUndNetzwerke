@@ -2,7 +2,7 @@
   "profiles": {
     "GraphApplication": {
       "commandName": "Project",
-      "commandLineArgs": "TopSortGraph.txt tsort"
+      "commandLineArgs": "LADDER.txt dfs 1 1000"
     }
   }
 }
