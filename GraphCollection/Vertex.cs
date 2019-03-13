@@ -11,11 +11,6 @@ namespace GraphCollection
     {
         #region fields
         /// <summary>
-        /// Die Liste mit Nachbarn des Knotens.
-        /// </summary>
-        //public virtual List<Vertex<T>> Neighbors { get; internal set; }
-
-        /// <summary>
         /// Der Wert des Knotens.
         /// </summary>
         public T Value { get; set; }
