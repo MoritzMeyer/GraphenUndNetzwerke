@@ -55,7 +55,7 @@ namespace GraphApplication
             switch (args[1].ToLower())
             {
                 case "dijkstra":
-                    if (args.Count() < 3 || args.Count() > 4)
+                    if (args.Count() != 4)
                     {
                         Console.WriteLine("");
                         Console.WriteLine("Number of Arguments doesn't match the function requirements");
@@ -63,15 +63,7 @@ namespace GraphApplication
                         //throw new ArgumentException("Not enough Arguments for this function.");
                     }
 
-                    if (args.Count() == 3)
-                    {
-                        ApplicationHelper.CallDijkstra(args[0], args[2]);
-                    }
-                    else
-                    {
-                        ApplicationHelper.CallDijkstra(args[0], args[2], args[3]);
-                    }
-
+                    ApplicationHelper.CallDijkstra(args[0], args[2], args[3]);
                     break;
                 case "prim":
                     if (args.Count() > 3)
@@ -175,7 +167,7 @@ namespace GraphApplication
             Console.WriteLine("");
             Console.WriteLine("functionname");
             Console.WriteLine("\t Name of the function to execute on the given graph. Possible functions are:");
-            Console.WriteLine("\t  - dijkstra \t fuction-parameter:  [start vertex] [target vertex (optional)]");
+            Console.WriteLine("\t  - dijkstra \t fuction-parameter:  [start vertex] [target vertex]");
             Console.WriteLine("\t  - prim \t function-parameter: [start vertex (optional)]");
             Console.WriteLine("\t  - kruskal \t (no parameters)");
             Console.WriteLine("\t  - ford-fulkerson \t (no parameters)");

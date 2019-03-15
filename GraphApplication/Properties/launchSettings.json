@@ -2,7 +2,7 @@
   "profiles": {
     "GraphApplication": {
       "commandName": "Project",
-      "commandLineArgs": "LADDER.txt dfs 1 1000"
+      "commandLineArgs": "GRID.txt dijkstra 1 10000"
     }
   }
 }

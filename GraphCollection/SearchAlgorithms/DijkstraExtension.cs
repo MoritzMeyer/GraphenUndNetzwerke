@@ -24,11 +24,10 @@ namespace GraphCollection.SearchAlgorithms
                 throw new ArgumentException("Der Dijkstra Algorithmus kann nur auf Graphen mit gewichteten Kanten durchgeführt werden.");
             }
 
+            // Die Workinglist initialisieren.
             List<Vertex<T>> workingList = new List<Vertex<T>>();
 
-            // Die Distancen initialisieren.
-            Dictionary<Vertex<T>, int> distances = new Dictionary<Vertex<T>, int>();
-
+            // Die Distanzen initialisieren.
             foreach (Vertex<T> vertex in graph.Vertices)
             {
                 if (vertex.Equals(start))
@@ -49,19 +48,12 @@ namespace GraphCollection.SearchAlgorithms
             while (workingList.Count > 0)
             {
                 // Ermittel den Knoten mit der aktuell geringsten Dijkstra Distanz
-                Vertex<T> actual = graph.Vertices
-                    .Where(v => !v.IsVisited)
+                Vertex<T> actual = workingList
                     .Aggregate((curMin, v) =>
                         (curMin == null || (v.DijkstraDistance ?? int.MaxValue) < curMin.DijkstraDistance ? v : curMin));
 
                 workingList.Remove(actual);
-                actual.Visit();
-
-                // Wenn die Distanz zum gesuchten Knoten gefunden ist, kann hier abgebrochen werden.
-                if (target != null && actual.Equals(target))
-                {
-                    return graph;
-                }
+                //actual.Visit();
 
                 // Dijkstradistanz und -vorgänger anpassen (falls nötig) für alle Nachbarknoten der ausgehenden Kanten des aktuellen Knotens
                 foreach (Edge<T> edge in graph.Edges.Where(e => e.From.Equals(actual)))
@@ -84,6 +76,12 @@ namespace GraphCollection.SearchAlgorithms
                             edge.From.DijkstraAncestor = actual;
                         }
                     }
+                }
+
+                // Wenn die Distanz zum gesuchten Knoten gefunden ist, kann hier abgebrochen werden.
+                if (target != null && actual.Equals(target))
+                {
+                    return graph;
                 }
             }
 

@@ -23,33 +23,38 @@ namespace GraphApplication
         /// <param name="fileName">Der Dateiname in dem der zu prüfende Graph liegt.</param>
         /// <param name="vStart">Der Knoten von dem aus die kürzesten Pfade berechnet werden sollen.</param>
         /// <param name="vEnd">Der Knoten zu dem der kürzeste Pfad berechnet werden soll.</param>
-        public static void CallDijkstra(string fileName, string vStart, string vEnd = null)
+        public static void CallDijkstra(string fileName, string vStart, string vEnd)
         {
             // Den Graphen aus der Datei laden.
             Graph<string> graph = ApplicationHelper.LoadGraph(fileName);
 
             // Den Start- und Endknoten der Dijkstra-Suche definieren.
             Vertex<string> start = new Vertex<string>(vStart);
-            Vertex<string> end = (vEnd != null) ? new Vertex<string>(vEnd) : null;
+            Vertex<string> end = new Vertex<string>(vEnd);
 
             // Dijkstra ausführen
-            Graph<string> result = (end != null) ? graph.Dijkstra(start, end) : graph.Dijkstra(start);
+            Graph<string> result = graph.Dijkstra(start, end);
 
             // Den Ergebnis - Pfad zusammenstellen
-            Stack<Vertex<string>> dijkstraPath = new Stack<Vertex<string>>();
-            Vertex<string> actual = graph.GetVertex(new Vertex<string>("996"));
-            while (!actual.Equals(start))
+            Stack<Edge<string>> dijkstraPath = new Stack<Edge<string>>();
+            Vertex<string> vActual = result.GetVertex(end);
+            Edge<string> eActual = null;
+            int costs = 0;
+            while (!vActual.Equals(start))
             {
-                dijkstraPath.Push(actual);
-                actual = actual.DijkstraAncestor;
+                eActual = result.GetEdge(vActual, vActual.DijkstraAncestor);
+                costs += eActual.Weight.Value;
+                dijkstraPath.Push(eActual);
+
+                vActual = vActual.DijkstraAncestor;
             }
 
             // Den letzten Knoten (start) noch pushen
-            dijkstraPath.Push(start);
+            //dijkstraPath.Push(start);
 
             // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "dijkstraResult_", dijkstraPath.Select(v => v.Value));
+            ApplicationHelper.WriteResult(baseFileName, "dijkstraResult_", "Path costs: " + costs, dijkstraPath.Select(e => e.ToString()));
         }
         #endregion
 
@@ -70,9 +75,13 @@ namespace GraphApplication
             // Prim ausführen.
             Graph<string> result = (start != null) ? graph.Prim(start) : graph.Prim();
 
+            // Die Kosten des Baumens berechnen
+            int costs = result.Edges.Sum((e) => e.Weight.Value);
+
             // Das Ergebnis in eine Datei schreiben.
+
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "primResult_", result.Edges.Select((edge) => edge.ToString()));
+            ApplicationHelper.WriteResult(baseFileName, "primResult_", "Tree costs: " + costs, result.Edges.Select((edge) => edge.ToString()));
         }
         #endregion
 
@@ -89,9 +98,12 @@ namespace GraphApplication
             // Kruskal ausführen.
             Graph<string> result = graph.KruskalDisjointSet();
 
+            // Die Kosten des Baumes berechnen
+            int costs = result.Edges.Sum((e) => e.Weight.Value);
+
             // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "kruskalResult_", result.Edges.Select((edge) => edge.ToString()));
+            ApplicationHelper.WriteResult(baseFileName, "kruskalResult_", "Tree costs: " + costs, result.Edges.Select((edge) => edge.ToString()));
         }
         #endregion
 
@@ -110,7 +122,7 @@ namespace GraphApplication
 
             // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "fordfulkersonResult_", result.Edges.Select((edge) => edge.ToString()));
+            ApplicationHelper.WriteResult(baseFileName, "fordfulkersonResult_", "", result.Edges.Select((edge) => edge.ToString()));
         }
         #endregion
 
@@ -130,6 +142,7 @@ namespace GraphApplication
             ApplicationHelper.WriteResult(
                 baseFileName, 
                 "strongConnectResult_", 
+                "",
                 components.Select(
                     (list) => "Component " + components.IndexOf(list) + ":" + Environment.NewLine + list.Select((edge) => edge.ToString()).Aggregate((a, b) => a + Environment.NewLine + b)))
 ;
@@ -151,7 +164,7 @@ namespace GraphApplication
 
             // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "topSortResult_", tSort.Select((kv) => kv.Value.ToString()))
+            ApplicationHelper.WriteResult(baseFileName, "topSortResult_", "", tSort.Select((kv) => kv.Value.ToString()))
 ;
         }
         #endregion
@@ -168,7 +181,7 @@ namespace GraphApplication
             string result = graph.AllPairsShortestPath();
 
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "allPairsShortestPathResult_", new List<string>() { result });
+            ApplicationHelper.WriteResult(baseFileName, "allPairsShortestPathResult_", "", new List<string>() { result });
         }
         #endregion
 
@@ -189,7 +202,7 @@ namespace GraphApplication
 
             // Das Ergebnis in eine Datei schreiben.
             string baseFileName = fileName.Split('.')[0];
-            ApplicationHelper.WriteResult(baseFileName, "dfsResult_", dfsPath.Select((edge) => edge.ToString()));
+            ApplicationHelper.WriteResult(baseFileName, "dfsResult_", "", dfsPath.Select((edge) => edge.ToString()));
         }
         #endregion
 
@@ -212,10 +225,11 @@ namespace GraphApplication
         /// <summary>
         /// Schreibt ein IEnumerable (Ergebnis) in eine angegebenen Datei.
         /// </summary>
-        /// <param name="fileName">Der Name der Ursprungsdatei.</param>
+        /// <param name="baseFileName">Der Name der Ursprungsdatei.</param>
         /// <param name="filePrefix">Der Name der zu schreibenden Datei.</param>
+        /// <param name="firstLine">Die erste Zeile:</param>
         /// <param name="content">Der Inhalt.</param>
-        private static void WriteResult(string baseFileName, string filePrefix, IEnumerable<string> content)
+        private static void WriteResult(string baseFileName, string filePrefix, string firstLine, IEnumerable<string> content)
         {
             Directory.CreateDirectory(ApplicationHelper.resultFolder);
 
@@ -231,7 +245,8 @@ namespace GraphApplication
             string resultFilePath = Path.Combine(
                 ApplicationHelper.resultFolder,
                 filePrefix + baseFileName + fcount + ".txt");
-        
+
+            File.AppendAllText(resultFilePath, firstLine + Environment.NewLine);
             File.AppendAllLines(resultFilePath, content);
         }
         #endregion

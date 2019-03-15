@@ -1,0 +1,17 @@
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\libhostpolicy.so
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\libhostfxr.so
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\graphsuitemm
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\graphsuitemm.deps.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\graphsuitemm.runtimeconfig.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\graphsuitemm.runtimeconfig.dev.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\graphsuitemm.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\graphsuitemm.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\GraphCollection.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\linux-x64\GraphCollection.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\GraphApplication.csprojAssemblyReference.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\GraphApplication.csproj.CoreCompileInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\GraphApplication.AssemblyInfoInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\GraphApplication.AssemblyInfo.cs
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\GraphApplication.csproj.CopyComplete
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\graphsuitemm.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\linux-x64\graphsuitemm.pdb

@@ -55,6 +55,13 @@ namespace GraphCollection.SearchAlgorithms
         }
         #endregion
 
+        #region KruskalDisjointSet
+        /// <summary>
+        /// Der Kruskal Algorithmus für minimale Spannbäume implementiert mit einer Union-Find Struktur.
+        /// </summary>
+        /// <typeparam name="T">Der generische Datentyp der Knoten des Graphen.</typeparam>
+        /// <param name="graph">Der Graph.</param>
+        /// <returns>Der minimale Spannbaum des Graphen.</returns>
         public static Graph<T> KruskalDisjointSet<T>(this Graph<T> graph)
         {
             if (!graph.IsWeighted)
@@ -103,6 +110,7 @@ namespace GraphCollection.SearchAlgorithms
 
             return minimalSpanningTree;
         }
+        #endregion
 
         #region Prim
         /// <summary>
@@ -139,10 +147,6 @@ namespace GraphCollection.SearchAlgorithms
                 start = graph.GetVertex(start);
                 workingList[workingList.IndexOf(start)].SortOrder = 0;
             }
-            else
-            {
-                workingList.First().SortOrder = 0;
-            }
 
             // Die Liste initial sortieren.
             workingList = workingList.OrderBy(v => v.SortOrder).ToList();
@@ -167,7 +171,7 @@ namespace GraphCollection.SearchAlgorithms
                     
                     if (actualEdge.Weight < neighbour.SortOrder)
                     {
-                        // Denn Nachbarn dem Baum hinzufügen, wenn noch nicht vorhanden.
+                        // Den Nachbarn dem Baum hinzufügen, wenn noch nicht vorhanden.
                         if (!minimalSpanningTree.HasVertex(neighbour))
                         {
                             minimalSpanningTree.AddVertex(new Vertex<T>(neighbour.Value));
