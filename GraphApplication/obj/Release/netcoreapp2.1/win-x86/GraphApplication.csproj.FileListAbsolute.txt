@@ -1,0 +1,16 @@
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\hostpolicy.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\hostfxr.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\graphsuitemm.exe
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\graphsuitemm.deps.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\graphsuitemm.runtimeconfig.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\graphsuitemm.runtimeconfig.dev.json
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\graphsuitemm.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\graphsuitemm.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\GraphCollection.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\bin\Release\netcoreapp2.1\win-x86\GraphCollection.pdb
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x86\GraphApplication.csproj.CoreCompileInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x86\GraphApplication.AssemblyInfoInputs.cache
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x86\GraphApplication.AssemblyInfo.cs
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x86\GraphApplication.csproj.CopyComplete
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x86\graphsuitemm.dll
+C:\Users\Moritz\Dropbox\Studium\Fulda\4_WS1819\GraphenNetzwerke\Exercises\GraphenUndNetzwerke\GraphApplication\obj\Release\netcoreapp2.1\win-x86\graphsuitemm.pdb
