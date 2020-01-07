@@ -205,5 +205,71 @@ namespace GraphCollection
             return neighborNodes.Where(v => v != null);
         }
         #endregion
+
+        public static Graph<string> LoadXmasCodingGraph(string path)
+        {
+            // Die Daten aus der Datei laden.
+            IEnumerable<string> lines = File.ReadLines(path);
+            if (lines.Count() < 1)
+            {
+                throw new InvalidDataException("The given File is empty");
+            }
+
+            // Variablen initialisieren
+            bool isFlowGraph = false;
+            bool isWeighted = true;
+            int numberOfVertices = 0;
+            Vertex<string> sSource = default(Vertex<string>);
+            Vertex<string> tSink = default(Vertex<string>);
+
+            // Die einzelnen Zeilen der Datei auslesen.
+            IEnumerator<string> linesEnumerator = lines.GetEnumerator();
+
+            // Die erste Zeile enthält die Anzahl an Knoten im Graphen
+            linesEnumerator.MoveNext();
+            string[] lineData = linesEnumerator.Current.Split(' ');
+            numberOfVertices = Convert.ToInt32(lineData[0]);
+
+            // Den Enumerator wieder auf die erste Zeile setzen
+            linesEnumerator = lines.GetEnumerator();
+            linesEnumerator.MoveNext();
+
+            Graph<string> graph = new Graph<string>(true);
+
+            // Die Liste mit Kanten, Knoten und Kantengewichten auslesen.            
+            int lineNumber = 2;
+
+            while (linesEnumerator.MoveNext())
+            {
+                string[] edgeData = linesEnumerator.Current.Split(' ');
+                if ((isFlowGraph && edgeData.Count() != 4) ||
+                     (!isFlowGraph && edgeData.Count() > 3) ||
+                     (!isFlowGraph && edgeData.Count() < 2))
+                {
+                    throw new ArgumentException($"Number of Arguments in line {lineNumber} doesn't macht the requirements");
+                }
+
+                // Wenn der ausgehende Knoten nicht vorhanden ist, diesen hinzufügen.
+                if (!graph.HasVertexWithValue(edgeData.First()))
+                {
+                    graph.AddVertex(edgeData.First());
+                }
+
+                // Wenn der eingehende Knoten nicht vorhanden ist, diesen hinzufügen.
+                if (!graph.HasVertexWithValue(edgeData[1]))
+                {
+                    graph.AddVertex(edgeData[1]);
+                }
+
+                if (!graph.AddEdge(edgeData.First(), edgeData[1], weight: Convert.ToInt32(edgeData.Last())))
+                {
+                    throw new ArgumentException("Die Kante konnte dem Graphen nicht hinzugefügt werden.");
+                }
+
+                lineNumber++;
+            }
+
+            return graph;
+        }
     }
 }

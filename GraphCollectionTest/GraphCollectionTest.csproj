@@ -65,6 +65,7 @@
     <Compile Include="StronglyConnectedComponentsTest.cs" />
     <Compile Include="TopSortTest.cs" />
     <Compile Include="TwoBucketsTest.cs" />
+    <Compile Include="XmasCoding19A12.cs" />
     <Compile Include="VertexTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +79,7 @@
     <Content Include="TestFiles\TestGraph.txt" />
     <Content Include="TestFiles\TopSortGraph.txt" />
     <Content Include="TestFiles\APSP-Graph.txt" />
+    <Content Include="TestFiles\xmasCoding12.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphCollection\GraphCollection.csproj">
